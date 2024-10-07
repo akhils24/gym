@@ -33,7 +33,7 @@ session_start();
         <title>Welcare Fitness</title>
 
         <!-- For favicon png -->
-		<link rel="shortcut icon" type="image/icon" href="assets/logo/favicon.jpg"/>
+		<link rel="shortcut icon" type="image/icon" href="assets/logo/favicon.png"/>
        
         <!--font-awesome.min.css-->
         <link rel="stylesheet" href="assets/css/font-awesome.min.css">

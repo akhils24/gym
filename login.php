@@ -5,24 +5,26 @@ if(isset($_POST["submit"]))
 {
 	$email=$_POST['username'];
 	$pass=$_POST['passd'];
-	$emailres = mysqli_query($conn, "SELECT username FROM `tbl_login` WHERE username = '$email'");
-    $passres = mysqli_query($conn, "SELECT password FROM `tbl_login` WHERE username = '$email'");
-	if(mysqli_num_rows($emailres) > 0)
+	$emailres = $conn->prepare("SELECT * FROM `tbl_login` WHERE username = ?");
+    $emailres->bind_param("s", $email);  // 's' means the parameter is a string
+    $emailres->execute();
+    $result = $emailres->get_result();
+	if(mysqli_num_rows($result) > 0)
 	{
-		$emailrow=mysqli_fetch_assoc($emailres);
+		$emailrow=mysqli_fetch_assoc($result);
 		$email = $emailrow['username'];
-		$tblrow=mysqli_query($conn,"SELECT * FROM `tbl_login` WHERE username = $email");
+		$tblrow=mysqli_query($conn,"SELECT * FROM `tbl_login` WHERE username = '$email'");
 		$tblres=mysqli_fetch_assoc($tblrow);
 		if($tblres['login_status']=='1')
 		{
 			$passrow=$tblres['password'];
-			if($passrow != $passres)
+			if($pass != $passrow)
 			{
-				echo "<script>alert('Your Password is Inccorrect..');</script>";
+				echo "<script>alert('Your Password is Inccorrect..');</script>" .$tblres['password'];
 			}
 			else{
 				$usrtyp=$tblres['user_type'];
-				echo "<script>alert('You have succesfully logged in .');</script>";
+				echo "<script>alert('You have succesfully logged in .');window.location.href='index.php';</script>";
 			}
 		}
 		else{
@@ -45,10 +47,10 @@ if(isset($_POST["submit"]))
 </head>
 <body>
 <!-- partial:index.partial.html -->
-<div class="container">
+<div class="container">  
 	<div class="screen">
 		<div class="screen__content">
-			<form class="login" method="POST" >
+			<form class="login" method="POST" action="login.php" >
 				<div class="login__field">
 					<i class="login__icon fas fa-user"></i>
 					<input type="text" class="login__input" placeholder="Email" name="username">
@@ -57,19 +59,18 @@ if(isset($_POST["submit"]))
 					<i class="login__icon fas fa-lock"></i>
 					<input type="password" class="login__input" placeholder="Password" name="passd">
 				</div>
-				<button class="button login__submit" name="submit">
+				<button class="button login__submit" type="submit" name="submit">
 					<span class="button__text">Log In Now</span>
 					<i class="button__icon fas fa-chevron-right"></i>
 				</button>				
 			</form>
-			<!-- <div class="social-login">
-				<h3>log in via</h3>
+			<div class="social-login">
 				<div class="social-icons">
-					<a href="#" class="social-login__icon fab fa-instagram"></a>
-					<a href="#" class="social-login__icon fab fa-facebook"></a>
-					<a href="#" class="social-login__icon fab fa-twitter"></a>
+					<a href="index.php" class="social-login__icon">sign in </a>
+					<!-- <a href="#" class="social-login__icon fab fa-facebook"></a>
+					<a href="#" class="social-login__icon fab fa-twitter"></a> -->
 				</div>
-			</div> -->
+			</div>
 		</div>
 		<div class="screen__background">
 			<span class="screen__background__shape screen__background__shape4"></span>

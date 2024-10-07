@@ -34,7 +34,7 @@ session_start();
         <title>Welcare Fitness</title>
 
         <!-- For favicon png -->
-		<link rel="shortcut icon" type="image/icon" href="assets/logo/favicon.jpg"/>
+		<link rel="shortcut icon" type="image/icon" href="assets/logo/favi.png"/>
        
         <!--font-awesome.min.css-->
         <link rel="stylesheet" href="assets/css/font-awesome.min.css">
@@ -95,7 +95,7 @@ session_start();
 				                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu">
 				                    <i class="fa fa-bars"></i>
 				                </button>
-				                <a class="navbar-brand" href="index.php">carvilla<span></span></a>
+				                <a class="navbar-brand" href="index.php">Welcare Fitness<span></span></a>
 
 				            </div><!--/.navbar-header-->
 				            <!-- End Header Navigation -->
@@ -725,7 +725,7 @@ session_start();
 						<div class="col-md-3 col-sm-6">
 							<div class="single-footer-widget">
 								<div class="footer-logo">
-									<a href="index.html">carvilla</a>
+									<a href="index.html">Welcare Fitness</a>
 								</div>
 								<p>
 									Ased do eiusm tempor incidi ut labore et dolore magnaian aliqua. Ut enim ad minim veniam.
