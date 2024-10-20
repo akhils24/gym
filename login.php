@@ -46,6 +46,16 @@ if(isset($_POST["submit"]))
 
 </head>
 <body>
+<nav>
+	<img src="assets/logo/logo.png" class="logo">
+	<ul>
+			<li><a href="index.php">HOME</a></li>
+			<li><a href="login.php">LOGIN</a></li>
+			<li><a href="">ABOUT US</a></li>
+			<li><a href="">CONTACT US</a></li>
+	</ul>
+</nav> 
+<br>
 <!-- partial:index.partial.html -->
 <div class="container">  
 	<div class="screen">
@@ -53,11 +63,11 @@ if(isset($_POST["submit"]))
 			<form class="login" method="POST" action="login.php" >
 				<div class="login__field">
 					<i class="login__icon fas fa-user"></i>
-					<input type="text" class="login__input" placeholder="Email" name="username">
+					<input type="text" class="login__input" placeholder="Email" name="username" required>
 				</div>
 				<div class="login__field">
 					<i class="login__icon fas fa-lock"></i>
-					<input type="password" class="login__input" placeholder="Password" name="passd">
+					<input type="password" class="login__input" placeholder="Password" name="passd" required>
 				</div>
 				<button class="button login__submit" type="submit" name="submit">
 					<span class="button__text">Log In Now</span>
@@ -65,8 +75,9 @@ if(isset($_POST["submit"]))
 				</button>				
 			</form>
 			<div class="social-login">
+				<!-- <h3 ></h3> -->
 				<div class="social-icons">
-					<a href="index.php" class="social-login__icon">sign in </a>
+					<a style="color:white;font-weight: bold;" href="register.php" class="social-login__icon ">Sign-In</a>
 					<!-- <a href="#" class="social-login__icon fab fa-facebook"></a>
 					<a href="#" class="social-login__icon fab fa-twitter"></a> -->
 				</div>
@@ -96,6 +107,7 @@ body {
 }
 
 .container {
+	margin-top:40px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -244,6 +256,11 @@ body {
 	color: #fff;
 }
 
+/* .social-login.h3 {
+	font-weight:bold;
+	color:white;
+} */
+
 .social-icons {
 	display: flex;
 	align-items: center;
@@ -259,6 +276,41 @@ body {
 
 .social-login__icon:hover {
 	transform: scale(1.5);	
+}
+nav {
+	margin-top: 20px;
+	width: 100%;
+	position: absolute;
+	padding: 0% 2%;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+nav .logo {
+	width: auto;
+	height: 90px; /* Adjust this height as per your need */
+	max-width: 100px; /* Optional: ensure it doesn't exceed a certain width */
+	opacity: 0.9; /* Slight transparency */
+}
+
+nav ul li {
+	list-style: none;
+	display: inline-block;
+	margin-left: 40px;
+}
+
+nav ul li a {
+	text-decoration: none;
+	font-weight:bold;
+	color: #333;
+	font-size: 17px;
+}
+
+nav ul li a:hover {
+	text-decoration: none;
+	font-weight:bold;
+	color: #fff;
 }
   </style>
 </body>

@@ -72,6 +72,7 @@ p {
     line-height: 1.8;
     text-transform: initial;
 }
+
 img{border:none;max-width:100%; height:auto;}
 ul{
 	padding: 0;
@@ -129,6 +130,29 @@ html,body{height: 100%;}
 /*-------------------------------------
         2. Top-area
 --------------------------------------*/
+
+/* .frontlogo {
+    width: auto;
+    height: 7px; /* Adjust height based on your logo 
+    max-width: 10px; /* Ensures it doesn't exceed a certain width 
+    opacity: 1; /* Full visibility 
+}
+
+.navbar-header {
+    display: flex;
+    align-items: center; /* Align logo vertically 
+    justify-content: flex-start; /* Align logo to the left 
+}
+
+.wrap-sticky nav.navbar.bootsnav.sticked .navbar-header {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.wrap-sticky nav.navbar.bootsnav.sticked .navbar-header a.navbar-brand img.frontlogo {
+    height: 30px; /* Adjust size when sticky 
+} */
 nav.navbar.bootsnav {
     background-color: transparent;
     border-bottom: transparent;

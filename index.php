@@ -87,16 +87,13 @@ session_start();
 				<div class="header-area">
 					<!-- Start Navigation -->
 				    <nav class="navbar navbar-default bootsnav  navbar-sticky navbar-scrollspy"  data-minus-value-desktop="70" data-minus-value-mobile="55" data-speed="1000">
-
 				        <div class="container">
-
 				            <!-- Start Header Navigation -->
 				            <div class="navbar-header">
-				                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu">
-				                    <i class="fa fa-bars"></i>
-				                </button>
-				                <a class="navbar-brand" href="index.php">Welcare Fitness<span></span></a>
-
+				                <a class="navbar-brand" href="index.php">
+									<img  style=" margin-top :-30px; height: 100px;" src="assets/logo/logo-new.png" class="frontlogo">
+									<span></span>
+								</a>
 				            </div><!--/.navbar-header-->
 				            <!-- End Header Navigation -->
 
@@ -122,9 +119,9 @@ session_start();
 
 			<div class="container">
 				<div class="welcome-hero-txt">
-					<h2>get your desired car in resonable price</h2>
+					<h2>welcome to <br> Welcare fitness</h2>
 					<p>
-						Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore   magna aliqua. 
+						From home workouts to serious gym setups, we’ve got the equipment to push your limits!
 					</p>
 					<button class="welcome-btn" onclick="window.location.href='login.php'">Login</button>
 				</div>
