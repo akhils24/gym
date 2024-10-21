@@ -5,7 +5,7 @@ if(isset($_POST["submit"]))
 {
 	$email=$_POST['username'];
 	$pass=$_POST['passd'];
-	$emailres = $conn->prepare("SELECT * FROM `tbl_login` WHERE username = ?");
+	$emailres = $conn->prepare("SELECT * FROM `login` WHERE username = ?");
     $emailres->bind_param("s", $email);  // 's' means the parameter is a string
     $emailres->execute();
     $result = $emailres->get_result();
@@ -13,7 +13,7 @@ if(isset($_POST["submit"]))
 	{
 		$emailrow=mysqli_fetch_assoc($result);
 		$email = $emailrow['username'];
-		$tblrow=mysqli_query($conn,"SELECT * FROM `tbl_login` WHERE username = '$email'");
+		$tblrow=mysqli_query($conn,"SELECT * FROM `login` WHERE username = '$email'");
 		$tblres=mysqli_fetch_assoc($tblrow);
 		if($tblres['login_status']=='1')
 		{
@@ -24,7 +24,7 @@ if(isset($_POST["submit"]))
 			}
 			else{
 				$usrtyp=$tblres['user_type'];
-				echo "<script>alert('You have succesfully logged in .');window.location.href='index.php';</script>";
+				echo "<script>alert('You have succesfully logged in .');window.location.href='admin/index.php';</script>";
 			}
 		}
 		else{
