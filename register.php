@@ -1,3 +1,42 @@
+<?php 
+include('head.php');
+if(isset($_POST['register'])) {
+    $firstName = $_POST['first_name'];
+    $lastName = $_POST['last_name'];
+    $email = $_POST['email'];
+    $gender = $_POST['gender'];
+    $dob = $_POST['date'];
+    $phoneNumber = $_POST['phone'];
+    $district = $_POST['district'];
+    $pincode = $_POST['pin'];
+    $place = $_POST['place'];
+    $passwordright = $_POST['rightpassword'];
+    $passwordleft = $_POST['leftpassword'];
+
+    if(trim($passwordleft) == trim($passwordright)) {
+          $lgn=mysqli_query($conn,"SELECT * FROM login WHERE username='$email'");
+          if(mysqli_num_rows($lgn)) {
+            echo "<script>alert('Username has already been used !');window.location.herf='register.php';</script>";
+          } else {
+            mysqli_begin_transaction($conn);
+            try {
+                $lgqry= "INSERT INTO login(username,password,user_type)VALUES('$email','$passwordleft','CU')";
+                mysqli_query($conn,$lgqry);
+                $custqry= "INSERT INTO customer(username,c_fname,c_lname,c_phno,c_place,c_dist,C_pincode,c_gender,c_dob)VALUES('$email','$firstName','$lastName','$phoneNumber','$place','$district','$pincode','$gender','$dob')";
+                mysqli_query($conn,$custqry);
+                commit($conn);
+                echo "<script>alert('Details of ".$firstName." have registered successfully!');</script>";
+            } catch(Exception $e) {
+                mysqli_rollback($conn);
+                echo "<script>alert('Registration Failed due to some issues. Please try again !');window.location.href='register.php';</script>";
+            }
+          }
+    }else {
+        echo "<script>alert('Your Passwords don\'t match !');</script>";
+    }
+}
+?>
+
 <!doctype html>
 <html class="no-js" lang="en">
 
@@ -7,55 +46,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Customer register</title>
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-
-    <!--font-family-->
-    <link href="https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-
-    <link href="https://fonts.googleapis.com/css?family=Rufina:400,700" rel="stylesheet">
-    
-    <!-- title of site -->
-    
-
-    <!-- For favicon png -->
-    <link rel="shortcut icon" type="image/icon" href="assets/logo/favicon.png"/>
-    
-    <!--font-awesome.min.css-->
-    <link rel="stylesheet" href="assets/css/font-awesome.min.css">
-
-    <!--linear icon css-->
-    <link rel="stylesheet" href="assets/css/linearicons.css">
-
-    <!--flaticon.css-->
-    <link rel="stylesheet" href="assets/css/flaticon.css">
-
-    <!--animate.css-->
-    <link rel="stylesheet" href="assets/css/animate.css">
-
-    <!--owl.carousel.css-->
-    <link rel="stylesheet" href="assets/css/owl.carousel.min.css">
-    <link rel="stylesheet" href="assets/css/owl.theme.default.min.css">
-    
-    <!--bootstrap.min.css-->
-    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-    
-    <!-- bootsnav -->
-    <link rel="stylesheet" href="assets/css/bootsnav.css" >	
-    
-    <!--style.css-->
-    <link rel="stylesheet" href="assets/css/style.css">
-    
-    <!--responsive.css-->
-    <link rel="stylesheet" href="assets/css/responsive.css">
-    
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-
 </head>
 <body>
     <nav>
@@ -107,23 +97,12 @@
 							<input type="password" name="rightpassword"  id="password" placeholder="Repeat Password" required>
 						</div>
 					</div>
-					<div class="form-group">
-						<div class="form-row" id="row1">
-							<input type="text" name="Country"  id="Country" placeholder="Country" required>
-						</div>
-						<div class="form-row" id="row2">
-							<input type="text" name="State"  id="State" placeholder="State" required>
-						</div>
-					</div>
 				</div>
 				<!-- The right blue Portion -->
 				<div class="form-right">
 					<h2 id="right">Contact Details</h2>
 					<div class="form-row">
 						<input type="number" name="phone" id="phone" placeholder="Phone Number" required>
-					</div>
-					<div class="form-row">
-						<input type="text" name="street" id="street" placeholder="Street Name" required>
 					</div>
 					<div class="form-group">
 						<div class="form-row" id="row3">
@@ -133,13 +112,8 @@
 							<input type="text" name="place" id="place" placeholder="Place" required>
 						</div>
 					</div>
-					<div class="form-group">
-						<div class="form-row" id="row1">
-							<input type="text" name="City" id="City" placeholder="City" required>
-						</div>
-						<div class="form-row" id="row2">
+                    <div class="form-row">
 							<input type="text" name="district" id="District" placeholder="District" required>
-						</div>
 					</div>
 					<div class="form-row-last">
 						<input class="register" type="submit" name="register" value="Register ">
@@ -171,7 +145,7 @@
         .form  {
             background: #fff;
             width: 999px;
-            height: 570px;
+            height: 470px;
             border-radius: 20px;
             margin: 20px 0;
             position: relative;

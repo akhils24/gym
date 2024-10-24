@@ -1,37 +1,45 @@
 <?php
 include ("head.php");
-
-if(isset($_POST["submit"]))
-{
+if(isset($_POST["submit"])) {
 	$email=$_POST['username'];
 	$pass=$_POST['passd'];
 	$emailres = $conn->prepare("SELECT * FROM `login` WHERE username = ?");
     $emailres->bind_param("s", $email);  // 's' means the parameter is a string
     $emailres->execute();
     $result = $emailres->get_result();
-	if(mysqli_num_rows($result) > 0)
-	{
+	if(mysqli_num_rows($result) > 0) {
 		$emailrow=mysqli_fetch_assoc($result);
 		$email = $emailrow['username'];
 		$tblrow=mysqli_query($conn,"SELECT * FROM `login` WHERE username = '$email'");
 		$tblres=mysqli_fetch_assoc($tblrow);
-		if($tblres['login_status']=='1')
-		{
+		if($tblres['login_status']=='1') {
 			$passrow=$tblres['password'];
-			if($pass != $passrow)
-			{
-				echo "<script>alert('Your Password is Inccorrect..');</script>" .$tblres['password'];
-			}
-			else{
+			if($pass != $passrow) {
+				echo "<script>alert('Your Password is Inccorrect..');</script>";
+			} else{
 				$usrtyp=$tblres['user_type'];
-				echo "<script>alert('You have succesfully logged in .');window.location.href='admin/index.php';</script>";
+				if($usrtyp == 'CU') {
+					$qry=mysqli_query($conn,"SELECT * FROM customer WHERE username ='$email'");
+					$rs=mysqli_fetch_assoc($qry);
+					$_SESSION['userid']= $rs['customer_id'];
+					$_SESSION['usertype'] = 'CU';
+					echo "<script>alert('You have succesfully logged in .');window.location.href='index.php';</script>";
+				} elseif($usrtyp == 'AD') {
+					$_SESSION['userid'] = 'ADMIN';
+					$_SESSION['usertype'] = 'AD';
+					echo "<script>alert('You have succesfully logged in .');window.location.href='admin/index.php';</script>";
+				} elseif($usrtyp == 'ST') {
+					$qry=mysqli_query($conn,"SELECT * FROM staff WHERE username ='$email'");
+					$rs=mysqli_fetch_assoc($qry);
+					$_SESSION['userid']= $rs['staff_id'];
+					$_SESSION['usertype'] = 'ST';
+					echo "<script>alert('You have succesfully logged in .');window.location.href='admin/index.php';</script>";
+				}
 			}
-		}
-		else{
+		} else{
 			echo "<script>alert('You are not authorised to enter into the platform.');</script>";
 		}
-	}
-	else{
+	} else{
 		echo "<script>alert('We Cannot find an account with that email address.');</script>";
 	}
 }

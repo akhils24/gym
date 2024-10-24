@@ -102,9 +102,11 @@ session_start();
 				                <ul class="nav navbar-nav navbar-right" data-in="fadeInDown" data-out="fadeOutUp">
 				                    <li class=" scroll active"><a href="#home">home</a></li>
 				                    <li class="scroll"><a href="#service">service</a></li>
-				                    <li class="scroll"><a href="#featured-cars">featured cars</a></li>
+				                    <li class="scroll"><a href="#featured-cars" >featured cars</a></li>
 				                    <li class="scroll"><a href="#new-cars">new cars</a></li>
-				                    <li class="scroll"><a href="#brand">brands</a></li>
+									<?php if(isset($_SESSION['userid'])):?>
+										<li class=""><a  href="logout.php" >logout</a></li>
+									<?php endif;?>
 				                    <li class="scroll"><a href="#contact">contact</a></li>
 				                </ul><!--/.nav -->
 				            </div><!-- /.navbar-collapse -->
@@ -123,7 +125,11 @@ session_start();
 					<p>
 						From home workouts to serious gym setups, we’ve got the equipment to push your limits!
 					</p>
+					<?php if(isset($_SESSION['userid'])):?>
+					<button class="welcome-btn" onclick="window.location.href='#new-cars'">New-Products</button>
+					<?php else: ?>
 					<button class="welcome-btn" onclick="window.location.href='login.php'">Login</button>
+					<?php endif;?>
 				</div>
 			</div>
 
@@ -665,55 +671,6 @@ session_start();
 		</section><!--/.clients-say-->	
 		<!-- clients-say end -->
 
-		<!--brand strat -->
-		<section id="brand"  class="brand">
-			<div class="container">
-				<div class="brand-area">
-					<div class="owl-carousel owl-theme brand-item">
-						<div class="item">
-							<a href="#">
-								<img src="assets/images/brand/br1.png" alt="brand-image" />
-							</a>
-						</div><!--/.item-->
-						<div class="item">
-							<a href="#">
-								<img src="assets/images/brand/br2.png" alt="brand-image" />
-							</a>
-						</div><!--/.item-->
-						<div class="item">
-							<a href="#">
-								<img src="assets/images/brand/br3.png" alt="brand-image" />
-							</a>
-						</div><!--/.item-->
-						<div class="item">
-							<a href="#">
-								<img src="assets/images/brand/br4.png" alt="brand-image" />
-							</a>
-						</div><!--/.item-->
-
-						<div class="item">
-							<a href="#">
-								<img src="assets/images/brand/br5.png" alt="brand-image" />
-							</a>
-						</div><!--/.item-->
-
-						<div class="item">
-							<a href="#">
-								<img src="assets/images/brand/br6.png" alt="brand-image" />
-							</a>
-						</div><!--/.item-->
-					</div><!--/.owl-carousel-->
-				</div><!--/.clients-area-->
-
-			</div><!--/.container-->
-
-		</section><!--/brand-->	
-		<!--brand end -->
-
-		<!--blog start -->
-		<section id="blog" class="blog"></section><!--/.blog-->
-		<!--blog end -->
-
 		<!--contact start-->
 		<footer id="contact"  class="contact">
 			<div class="container">
@@ -791,24 +748,7 @@ session_start();
 						</div>
 					</div>
 				</div>
-				<div class="footer-copyright">
-					<div class="row">
-						<div class="col-sm-6">
-							<p>
-								&copy; copyright.designed and developed by <a href="https://www.themesine.com/">themesine</a>.
-							</p><!--/p-->
-						</div>
-						<div class="col-sm-6">
-							<div class="footer-social">
-								<a href="#"><i class="fa fa-facebook"></i></a>	
-								<a href="#"><i class="fa fa-instagram"></i></a>
-								<a href="#"><i class="fa fa-linkedin"></i></a>
-								<a href="#"><i class="fa fa-pinterest-p"></i></a>
-								<a href="#"><i class="fa fa-behance"></i></a>	
-							</div>
-						</div>
-					</div>
-				</div><!--/.footer-copyright-->
+				
 			</div><!--/.container-->
 
 			<div id="scroll-Top">
