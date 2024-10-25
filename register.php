@@ -1,3 +1,42 @@
+<?php 
+include('head.php');
+if(isset($_POST['register'])) {
+    $firstName = $_POST['first_name'];
+    $lastName = $_POST['last_name'];
+    $email = $_POST['email'];
+    $gender = $_POST['gender'];
+    $dob = $_POST['date'];
+    $phoneNumber = $_POST['phone'];
+    $district = $_POST['district'];
+    $pincode = $_POST['pin'];
+    $place = $_POST['place'];
+    $passwordright = $_POST['rightpassword'];
+    $passwordleft = $_POST['leftpassword'];
+
+    if(trim($passwordleft) == trim($passwordright)) {
+          $lgn=mysqli_query($conn,"SELECT * FROM login WHERE username='$email'");
+          if(mysqli_num_rows($lgn)) {
+            echo "<script>alert('Username has already been used !');window.location.href='register.php';</script>";
+          } else {
+            mysqli_begin_transaction($conn);
+            try {
+                $lgqry= "INSERT INTO login(username,password,user_type)VALUES('$email','$passwordleft','CU')";
+                mysqli_query($conn,$lgqry);
+                $custqry= "INSERT INTO customer(username,c_fname,c_lname,c_phno,c_place,c_dist,C_pincode,c_gender,c_dob)VALUES('$email','$firstName','$lastName','$phoneNumber','$place','$district','$pincode','$gender','$dob')";
+                mysqli_query($conn,$custqry);
+                mysqli_commit($conn);
+                echo "<script>alert('Details of ".$firstName." have registered successfully!');</script>";
+            } catch(Exception $e) {
+                mysqli_rollback($conn);
+                echo "<script>alert('Registration Failed due to some issues. Please try again !');window.location.href='register.php';</script>";
+            }
+          }
+    }else {
+        echo "<script>alert('Your Passwords don\'t match !');</script>";
+    }
+}
+?>
+
 <!doctype html>
 <html class="no-js" lang="en">
 
