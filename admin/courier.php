@@ -4,39 +4,40 @@ if(isset($_POST['deactivate'])) {
   $id=$_POST['id'];
   mysqli_begin_transaction($conn);
   try {
-    $usr=mysqli_query($conn,"SELECT * FROM staff WHERE staff_id ='$id'");
-    $stafftbl=mysqli_fetch_assoc($usr);
-    $qry=mysqli_query($conn,"UPDATE login SET login_status=0 WHERE username='".$stafftbl['username']."'");
-    $qry=mysqli_query($conn,"UPDATE staff SET s_status=0 WHERE staff_id='".$stafftbl['staff_id']."'");  
+    $usr=mysqli_query($conn,"SELECT * FROM courier WHERE courier_id ='$id'");
+    $courtbl=mysqli_fetch_assoc($usr);
+    $qry=mysqli_query($conn,"UPDATE login SET login_status=0 WHERE username='".$courtbl['username']."'");
+    $qry=mysqli_query($conn,"UPDATE courier SET co_status=0 WHERE courier_id='".$courtbl['courier_id']."'");  
     mysqli_commit($conn);
   } catch(Exception $e) {
     mysqli_rollback($conn);
-    echo "<script>alert('Deactivation Failed due to some issues. Please try again !');window.location.href='staff.php';</script>";
+    echo "<script>alert('Deactivation Failed due to some issues. Please try again !');window.location.href='courier.php';</script>";
   }
 }
 if(isset($_POST['activate'])) {
   $id=$_POST['id'];
   mysqli_begin_transaction($conn);
   try {
-    $usr=mysqli_query($conn,"SELECT * FROM staff WHERE staff_id ='$id'");
-    $stafftbl=mysqli_fetch_assoc($usr);
-    $qry=mysqli_query($conn,"UPDATE login SET login_status=1 WHERE username='".$stafftbl['username']."'");
-    $qry=mysqli_query($conn,"UPDATE staff SET s_status=1 WHERE staff_id='".$stafftbl['staff_id']."'");  
+    $usr=mysqli_query($conn,"SELECT * FROM courier WHERE courier_id ='$id'");
+    $courtbl=mysqli_fetch_assoc($usr);
+    $qry=mysqli_query($conn,"UPDATE login SET login_status=1 WHERE username='".$courtbl['username']."'");
+    $qry=mysqli_query($conn,"UPDATE courier SET co_status=1 WHERE courier_id='".$courtbl['courier_id']."'");  
     mysqli_commit($conn);
   } catch(Exception $e) {
     mysqli_rollback($conn);
-    echo "<script>alert('Activation Failed due to some issues. Please try again !');window.location.href='staff.php';</script>";
+    echo "<script>alert('Activation Failed due to some issues. Please try again !');window.location.href='courier.php';</script>";
   }
 }
 ?>
+
 <div class="container">
     <div class="page-inner">
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
                     <div class="d-flex align-items-center">
-                        <h4 class="card-title">STAFF DETAILS</h4>
-                        <button class="btn btn-primary btn-round ms-auto" onclick="window.location.href='addstaff.php'" data-bs-toggle="modal"> <i class="fa fa-plus"></i> Add Staff </button>
+                        <h4 class="card-title">COURIER COMPANY DETAILS</h4>
+                        <button class="btn btn-primary btn-round ms-auto" onclick="window.location.href='addcourier.php'" data-bs-toggle="modal"> <i class="fa fa-plus"></i> Add courier </button>
                     </div>
                 </div>
                 <div class="card-body">
@@ -44,40 +45,47 @@ if(isset($_POST['activate'])) {
                         <table id="add-row" class="display table table-striped table-hover" style="table-layout: fixed; width:130%">
                           <thead>
                             <tr>
-                                <th>Staff-ID</th>
+                                <th>courier-ID</th>
                                 <th style="width:10%">Username</th>
                                 <th>Name</th>
                                 <th>Phone</th>
-                                <th>Gender</th>
-                                <th>DOB</th>
-                                <th>Place</th>
+                                <th>City</th>
                                 <th>District</th>
+                                <th>Pincode</th>
+                                <th>Staff Name</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
                           </thead>
                           <tbody>
                             <?php
-                            $stf=mysqli_query($conn,"SELECT * FROM staff");
+                            $stf=mysqli_query($conn,"SELECT * FROM courier");
                             if($stf) {
                               while($row =mysqli_fetch_assoc($stf)) {
+                                  if($row['staff_id']== 000)
+                                      $stflg ='ADMIN';
+                                  else{
+                                      $stfsql=mysqli_query($conn,"SELECT * FROM staff WHERE staff_id ='".$row['staff_id']."'");
+                                      $stfqry=mysqli_fetch_assoc($stfsql);
+                                      $stflg=$stfqry['s_fname'];
+                                  }
                                 echo "<tr>";
-                                echo "<td>" . $row['staff_id'] . "</td>";
+                                echo "<td>" . $row['courier_id'] . "</td>";
                                 echo "<td>" . $row['username'] . "</td>";
-                                echo "<td>" . $row['s_fname'] ." ".$row['s_lname']. "</td>";
-                                echo "<td>" . $row['s_phno'] . "</td>";
-                                echo "<td>" . $row['s_gender'] . "</td>";
-                                echo "<td>" . $row['s_dob'] . "</td>";
-                                echo "<td>" . $row['s_place'] . "</td>";
-                                echo "<td>" . $row['s_dist'] . "</td>";
-                                if($row['s_status']==1)
+                                echo "<td>" . $row['co_name'] ."</td>";
+                                echo "<td>" . $row['co_phone'] . "</td>";
+                                echo "<td>" . $row['co_city'] . "</td>";
+                                echo "<td>" . $row['co_dist'] . "</td>";
+                                echo "<td>" . $row['co_pin'] . "</td>";
+                                echo "<td>" . $stflg. "</td>";
+                                if($row['co_status']==1)
                                   echo "<td>Active</td>";
                                 else
                                   echo "<td>Inactive</td>";
                                 echo '<td>
                                   <form method="POST" action="" >
-                                    <input type="hidden"  name="id" value="'. $row['staff_id'] .'">';
-                                    if($row['s_status']==1) {
+                                    <input type="hidden"  name="id" value="'. $row['courier_id'] .'">';
+                                    if($row['co_status']==1) {
                                       echo '<div class="form-button-action">                
                                       <button type="submit" name="edit" data-bs-toggle="tooltip" title="Edit" class="btn btn-link btn-primary btn-lg"> <i class="fa fa-edit"></i> </button>
                                       <button type="submit" name="deactivate"  title="Deactivate" class="btn btn-link btn-danger" > <i class="fa fa-times"></i> </button>

@@ -88,39 +88,25 @@ session_start();
                 </span>
                 <h4 class="text-section">Management</h4>
               </li>
+              <?php if($_SESSION['usertype'] == 'AD'): ?>
               <li class="nav-item">
-                <a  href="staff.php"> <i class="fas fa-layer-group"></i> <p>Staff</p></a>
-                <!-- <div class="collapse" id="base">
-                  <ul class="nav nav-collapse">
-                    <li>
-                      <a href="components/avatars.html"><span class="sub-item">Avatars</span></a>
-                    </li>
-                    <li>
-                      <a href="components/buttons.html"><span class="sub-item">Buttons</span></a>
-                    </li>
-                  </ul>
-                </div> -->
+                <a  href="staff.php"> <i class="fas fa-user-cog"></i> <p>Staffs</p></a>
+              </li>
+              <?php endif; ?>
+              <li class="nav-item">
+                <a  href="customers.php"><i class="fas fa-user-friends"></i><p>Customers</p></a>
               </li>
               <li class="nav-item">
-                <a data-bs-toggle="collapse" href="#sidebarLayouts">
-                    <i class="fas fa-th-list"></i>
-                    <p>Sidebar Layouts</p>
-                  <span class="caret"></span>
-                </a>
-                <div class="collapse" id="sidebarLayouts">
-                  <ul class="nav nav-collapse">
-                    <li>
-                      <a href="sidebar-style-2.html">
-                        <span class="sub-item">Sidebar Style 2</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="icon-menu.html">
-                        <span class="sub-item">Icon Menu</span>
-                      </a>
-                    </li>
-                  </ul>
-                </div>
+                <a  href="courier.php"><i class="fas fa-user-astronaut"></i><p>Courier</p></a>
+              </li>
+              <li class="nav-item">
+                <a  href="category.php"><i class="fas fa-th-list"></i><p>Category</p></a>
+              </li>
+              <li class="nav-item">
+                <a  href="sub-category.php"><i class="fas fa-grip-horizontal"></i><p>Sub-Category</p></a>
+              </li>
+              <li class="nav-item">
+                <a  href="item.php"><i class="fas fa-ellipsis-h"></i><p>Items</p></a>
               </li>
               <li class="nav-item">
                 <a data-bs-toggle="collapse" href="#forms">
@@ -272,3 +258,63 @@ session_start();
       </div>
       <!-- End Sidebar -->
 
+    <div class="main-panel">
+    <div class="main-header">
+      <!-- Navbar Header -->
+      <nav class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom">
+        <div class="container-fluid">
+          <nav class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex" >
+            <div class="input-group">
+              <input type="text" placeholder="Search ..." class="form-control"/>
+              <div class="input-group-prepend">
+                <button type="submit" class="btn btn-search pe-1"> <i class="fa fa-search search-icon"></i> </button>
+              </div>
+            </div>
+          </nav>
+          <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
+            <li class="nav-item topbar-user dropdown hidden-caret">
+              <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#" aria-expanded="false" >
+                <div class="avatar-sm">
+                  <img src="assets/img/profile.jpg" alt="..." class="avatar-img rounded-circle" />
+                </div>
+                <span class="profile-username">
+                  <span class="op-7">Hi,</span>
+                  <?php if($_SESSION['usertype'] == 'AD'):?>
+                  <span class="fw-bold">Admin</span>
+                  <?php elseif($_SESSION['usertype'] == 'ST') :
+                      $usqry=mysqli_query($conn,"SELECT * FROM staff WHERE staff_id =" .$_SESSION['userid']); 
+                      $us=mysqli_fetch_assoc($usqry); ?>
+                    <span class="fw-bold"><?php echo $us['s_fname'].' '.$us['s_lname']; ?></span>
+                    <?php endif;?>
+                </span>
+              </a>
+              <ul class="dropdown-menu dropdown-user animated fadeIn">
+                <div class="dropdown-user-scroll scrollbar-outer">
+                  <li>
+                    <div class="user-box">
+                      <div class="avatar-lg">
+                        <img src="assets/img/profile.jpg" alt="image profile" class="avatar-img rounded" />
+                      </div>
+                      <div class="u-text">
+                        <?php if($_SESSION['usertype'] == 'AD'):?>
+                        <h4>ADMIN</h4>
+                        <p class="text-muted">admin@example.com</p>
+                        <?php elseif($_SESSION['usertype'] == 'ST') : ?>
+                        <h4><?php echo $us['s_fname'].' '.$us['s_lname']; ?></h4>
+                        <p class="text-muted"><?php echo $us['username']; ?></p>
+                        <a href="profile.html" class="btn btn-xs btn-secondary btn-sm" >View Profile</a>
+                        <?php endif;?>
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="logout.php">Logout</a>
+                  </li>
+                </div>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </div>

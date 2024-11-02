@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Shopping Cart</title>
+    <style>
+        .item { margin: 10px; padding: 10px; border: 1px solid #ccc; display: inline-block; }
+        .cart { margin: 20px; padding: 10px; border: 1px solid #333; }
+    </style>
+</head>
+<body>
+    <h2>Items</h2>
+    <div id="items"></div>
+
+    <h2>Your Cart</h2>
+    <div id="cart" class="cart">
+        <p>No items in the cart.</p>
+    </div>
+    <button onclick="submitCart()">Submit Cart</button>
+
+    <script>
+        let cart = [];
+
+        // Fetch items from the database
+        fetch("fetch_items.php")
+            .then(response => response.json())
+            .then(items => {
+                const itemsDiv = document.getElementById("items");
+                items.forEach(item => {
+                    const itemDiv = document.createElement("div");
+                    itemDiv.className = "item";
+                    itemDiv.innerHTML = `
+                        <p><strong>${item.name}</strong></p>
+                        <p>Price: $${item.price}</p>
+                        <button onclick="addToCart(${item.id}, '${item.name}', ${item.price})">Add to Cart</button>
+                    `;
+                    itemsDiv.appendChild(itemDiv);
+                });
+            })
+            .catch(error => console.error("Error fetching items:", error));
+
+        function addToCart(id, name, price) {
+            const item = cart.find(item => item.id === id);
+            if (item) {
+                item.quantity += 1;
+            } else {
+                cart.push({ id, name, price, quantity: 1 });
+            }
+            displayCart();
+        }
+
+        function displayCart() {
+            const cartDiv = document.getElementById("cart");
+            cartDiv.innerHTML = "";
+            if (cart.length === 0) {
+                cartDiv.innerHTML = "<p>No items in the cart.</p>";
+                return;
+            }
+            cart.forEach(item => {
+                const itemDiv = document.createElement("div");
+                itemDiv.innerHTML = `
+                    <p>${item.name} - $${item.price} x ${item.quantity}</p>
+                `;
+                cartDiv.appendChild(itemDiv);
+            });
+        }
+
+        function submitCart() {
+            fetch("process_cart.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(cart),
+            })
+            .then(response => response.text())
+            .then(data => {
+                alert(data); // Show response from PHP
+                cart = []; // Clear cart
+                displayCart(); // Update cart display
+            })
+            .catch(error => console.error("Error submitting cart:", error));
+        }
+    </script>
+</body>
+</html>

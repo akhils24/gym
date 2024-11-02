@@ -1,69 +1,6 @@
 <?php
 include('header.php');
 ?>
-
-<div class="main-panel">
-  <div class="main-header">
-    <!-- Navbar Header -->
-    <nav
-      class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom"
-    >
-      <div class="container-fluid">
-        <nav class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex" >
-          <div class="input-group">
-            <input type="text" placeholder="Search ..." class="form-control"/>
-            <div class="input-group-prepend">
-              <button type="submit" class="btn btn-search pe-1"> <i class="fa fa-search search-icon"></i> </button>
-            </div>
-          </div>
-        </nav>
-        <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
-          <li class="nav-item topbar-user dropdown hidden-caret">
-            <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#" aria-expanded="false" >
-              <div class="avatar-sm">
-                <img src="assets/img/profile.jpg" alt="..." class="avatar-img rounded-circle" />
-              </div>
-              <span class="profile-username">
-                <span class="op-7">Hi,</span>
-                <?php if($_SESSION['usertype'] == 'AD'):?>
-                 <span class="fw-bold">Admin</span>
-                <?php elseif($_SESSION['usertype'] == 'ST') :?>
-                  <span class="fw-bold">Staff</span>
-                  <?php endif;?>
-              </span>
-            </a>
-            <ul class="dropdown-menu dropdown-user animated fadeIn">
-              <div class="dropdown-user-scroll scrollbar-outer">
-                <li>
-                  <div class="user-box">
-                    <div class="avatar-lg">
-                      <img src="assets/img/profile.jpg" alt="image profile" class="avatar-img rounded" />
-                    </div>
-                    <div class="u-text">
-                      <?php if($_SESSION['usertype'] == 'AD'):?>
-                      <h4>ADMIN</h4>
-                      <p class="text-muted">admin@example.com</p>
-                      <?php elseif($_SESSION['usertype'] == 'ST') :?>
-                      <h4>STAFF</h4>
-                      <p class="text-muted">staff@example.com</p>
-                      <a href="profile.html" class="btn btn-xs btn-secondary btn-sm" >View Profile</a>
-                      <?php endif;?>
-                    </div>
-                  </div>
-                </li>
-                <li>
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="logout.php">Logout</a>
-                </li>
-              </div>
-            </ul>
-          </li>
-        </ul>
-      </div>
-    </nav>
-    <!-- End Navbar -->
-  </div>
-
   <div class="container">
     <div class="page-inner">
       <div
@@ -685,6 +622,7 @@ include('header.php');
       </div>
     </div>
   </div>
+</div>
 </div>
 
   </div>
