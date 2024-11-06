@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 03, 2024 at 07:36 PM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- Generation Time: Oct 26, 2024 at 10:37 AM
+-- Server version: 10.4.27-MariaDB
+-- PHP Version: 8.2.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -88,7 +88,6 @@ CREATE TABLE `courier` (
   `co_city` varchar(20) NOT NULL,
   `co_dist` varchar(20) NOT NULL,
   `co_pin` varchar(20) NOT NULL,
-  `co_street` varchar(20) NOT NULL,
   `co_phone` decimal(10,0) NOT NULL,
   `co_status` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -105,12 +104,20 @@ CREATE TABLE `customer` (
   `c_fname` varchar(10) NOT NULL,
   `c_lname` varchar(10) NOT NULL,
   `c_phno` decimal(10,0) NOT NULL,
-  `c_street` varchar(10) NOT NULL,
+  `c_place` varchar(10) NOT NULL,
   `c_dist` varchar(20) NOT NULL,
-  `c_gender` varchar(1) NOT NULL,
+  `c_pincode` int(11) NOT NULL,
+  `c_gender` varchar(10) NOT NULL,
   `c_dob` date NOT NULL,
-  `c_status` tinyint(1) NOT NULL
+  `c_status` tinyint(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `customer`
+--
+
+INSERT INTO `customer` (`customer_id`, `username`, `c_fname`, `c_lname`, `c_phno`, `c_place`, `c_dist`, `c_pincode`, `c_gender`, `c_dob`, `c_status`) VALUES
+(1, 'rafi@gmail.com', 'rafi', 'M', '9846321615', 'fort kochi', 'Ernakulam', 682025, 'Male', '2004-08-12', 1);
 
 -- --------------------------------------------------------
 
@@ -164,8 +171,18 @@ CREATE TABLE `login` (
   `username` varchar(20) NOT NULL,
   `password` varchar(7) NOT NULL,
   `user_type` varchar(2) NOT NULL,
-  `login_status` bit(1) NOT NULL
+  `login_status` bit(1) NOT NULL DEFAULT b'1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `login`
+--
+
+INSERT INTO `login` (`username`, `password`, `user_type`, `login_status`) VALUES
+('admin', 'admin', 'AD', b'1'),
+('rafi@gmail.com', '123', 'CU', b'1'),
+('s1@gmail.com', '123', 'ST', b'1'),
+('s2@gmail.com', '123', 'ST', b'1');
 
 -- --------------------------------------------------------
 
@@ -220,15 +237,23 @@ CREATE TABLE `purchase_master` (
 CREATE TABLE `staff` (
   `staff_id` int(5) NOT NULL,
   `username` varchar(20) DEFAULT NULL,
-  `s_fname` varchar(10) NOT NULL,
-  `s_lname` varchar(10) NOT NULL,
+  `s_fname` varchar(50) NOT NULL,
+  `s_lname` varchar(50) NOT NULL,
   `s_phno` decimal(10,0) NOT NULL,
-  `s_street` varchar(10) NOT NULL,
-  `s_dist` varchar(20) NOT NULL,
-  `s_gender` varchar(1) NOT NULL,
+  `s_place` varchar(50) NOT NULL,
+  `s_dist` varchar(50) NOT NULL,
+  `s_gender` varchar(10) NOT NULL,
   `s_dob` date NOT NULL,
-  `s_status` bit(1) NOT NULL
+  `s_status` bit(1) NOT NULL DEFAULT b'1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `staff`
+--
+
+INSERT INTO `staff` (`staff_id`, `username`, `s_fname`, `s_lname`, `s_phno`, `s_place`, `s_dist`, `s_gender`, `s_dob`, `s_status`) VALUES
+(2, 's1@gmail.com', 'Staff 1', ' ', '9846324318', 'Palarivattom', 'Ernakulam', 'Male', '2007-07-12', b'1'),
+(3, 's2@gmail.com', 'Kevin', 'k', '6282151434', 'Kakkanad', 'Ernakulam', 'Male', '2000-12-05', b'1');
 
 -- --------------------------------------------------------
 
@@ -298,8 +323,7 @@ ALTER TABLE `category`
 ALTER TABLE `courier`
   ADD PRIMARY KEY (`courier_id`),
   ADD UNIQUE KEY `co_phone` (`co_phone`),
-  ADD KEY `username` (`username`),
-  ADD KEY `staff_id` (`staff_id`);
+  ADD KEY `username` (`username`);
 
 --
 -- Indexes for table `customer`
@@ -384,7 +408,7 @@ ALTER TABLE `vendor`
   ADD KEY `staff_id` (`staff_id`);
 
 --
--- Constraints for dumped tables
+-- AUTO_INCREMENT for dumped tables
 --
 ALTER TABLE `card` MODIFY `card_id` INT AUTO_INCREMENT PRIMARY KEY;
 ALTER TABLE `cart_child` MODIFY `cart_child_id` INT AUTO_INCREMENT PRIMARY KEY;
@@ -402,95 +426,94 @@ ALTER TABLE `subcategory` MODIFY `subcat_id` INT AUTO_INCREMENT PRIMARY KEY;
 ALTER TABLE `vendor` MODIFY `vendor_id` INT AUTO_INCREMENT PRIMARY KEY;
 
 --
--- Constraints for table `card`
+-- AUTO_INCREMENT for table `card`
 --
 ALTER TABLE `card`
-  ADD CONSTRAINT `card_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`customer_id`);
+  MODIFY `card_id` int(5) NOT NULL AUTO_INCREMENT;
 
 --
--- Constraints for table `cart_child`
+-- AUTO_INCREMENT for table `cart_child`
 --
 ALTER TABLE `cart_child`
-  ADD CONSTRAINT `cart_child_ibfk_1` FOREIGN KEY (`cart_master_id`) REFERENCES `cart_master` (`cart_master_id`),
-  ADD CONSTRAINT `cart_child_ibfk_2` FOREIGN KEY (`item_id`) REFERENCES `item` (`item_id`);
+  MODIFY `cart_child_id` int(5) NOT NULL AUTO_INCREMENT;
 
 --
--- Constraints for table `cart_master`
+-- AUTO_INCREMENT for table `cart_master`
 --
 ALTER TABLE `cart_master`
-  ADD CONSTRAINT `cart_master_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`customer_id`);
+  MODIFY `cart_master_id` int(5) NOT NULL AUTO_INCREMENT;
 
 --
--- Constraints for table `courier`
+-- AUTO_INCREMENT for table `category`
+--
+ALTER TABLE `category`
+  MODIFY `cat_id` int(5) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `courier`
 --
 ALTER TABLE `courier`
-  ADD CONSTRAINT `courier_ibfk_1` FOREIGN KEY (`username`) REFERENCES `login` (`username`),
-  ADD CONSTRAINT `courier_ibfk_2` FOREIGN KEY (`staff_id`) REFERENCES `staff` (`staff_id`);
+  MODIFY `courier_id` int(5) NOT NULL AUTO_INCREMENT;
 
 --
--- Constraints for table `customer`
+-- AUTO_INCREMENT for table `customer`
 --
 ALTER TABLE `customer`
-  ADD CONSTRAINT `customer_ibfk_1` FOREIGN KEY (`username`) REFERENCES `login` (`username`);
+  MODIFY `customer_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- Constraints for table `c_assign`
+-- AUTO_INCREMENT for table `c_assign`
 --
 ALTER TABLE `c_assign`
-  ADD CONSTRAINT `c_assign_ibfk_1` FOREIGN KEY (`cart_master_id`) REFERENCES `cart_master` (`cart_master_id`),
-  ADD CONSTRAINT `c_assign_ibfk_2` FOREIGN KEY (`courier_id`) REFERENCES `courier` (`courier_id`);
+  MODIFY `cassign_id` int(5) NOT NULL AUTO_INCREMENT;
 
 --
--- Constraints for table `delivery`
+-- AUTO_INCREMENT for table `delivery`
 --
 ALTER TABLE `delivery`
-  ADD CONSTRAINT `delivery_ibfk_1` FOREIGN KEY (`cassign_id`) REFERENCES `c_assign` (`cassign_id`);
+  MODIFY `delivery_id` int(5) NOT NULL AUTO_INCREMENT;
 
 --
--- Constraints for table `item`
+-- AUTO_INCREMENT for table `item`
 --
 ALTER TABLE `item`
-  ADD CONSTRAINT `item_ibfk_1` FOREIGN KEY (`subcat_id`) REFERENCES `subcategory` (`subcat_id`);
+  MODIFY `item_id` int(5) NOT NULL AUTO_INCREMENT;
 
 --
--- Constraints for table `payment`
+-- AUTO_INCREMENT for table `payment`
 --
 ALTER TABLE `payment`
-  ADD CONSTRAINT `payment_ibfk_1` FOREIGN KEY (`cart_master_id`) REFERENCES `cart_master` (`cart_master_id`),
-  ADD CONSTRAINT `payment_ibfk_2` FOREIGN KEY (`card_id`) REFERENCES `card` (`card_id`);
+  MODIFY `pay_id` int(5) NOT NULL AUTO_INCREMENT;
 
 --
--- Constraints for table `purchase_child`
+-- AUTO_INCREMENT for table `purchase_child`
 --
 ALTER TABLE `purchase_child`
-  ADD CONSTRAINT `purchase_child_ibfk_1` FOREIGN KEY (`pur_master_id`) REFERENCES `purchase_master` (`pur_master_id`),
-  ADD CONSTRAINT `purchase_child_ibfk_2` FOREIGN KEY (`item_id`) REFERENCES `item` (`item_id`);
+  MODIFY `pur_child_id` int(5) NOT NULL AUTO_INCREMENT;
 
 --
--- Constraints for table `purchase_master`
+-- AUTO_INCREMENT for table `purchase_master`
 --
 ALTER TABLE `purchase_master`
-  ADD CONSTRAINT `purchase_master_ibfk_1` FOREIGN KEY (`staff_id`) REFERENCES `staff` (`staff_id`),
-  ADD CONSTRAINT `purchase_master_ibfk_2` FOREIGN KEY (`vendor_id`) REFERENCES `vendor` (`vendor_id`);
+  MODIFY `pur_master_id` int(5) NOT NULL AUTO_INCREMENT;
 
 --
--- Constraints for table `staff`
+-- AUTO_INCREMENT for table `staff`
 --
 ALTER TABLE `staff`
-  ADD CONSTRAINT `staff_ibfk_1` FOREIGN KEY (`username`) REFERENCES `login` (`username`);
+  MODIFY `staff_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- Constraints for table `subcategory`
+-- AUTO_INCREMENT for table `subcategory`
 --
 ALTER TABLE `subcategory`
-  ADD CONSTRAINT `subcategory_ibfk_1` FOREIGN KEY (`cat_id`) REFERENCES `category` (`cat_id`);
+  MODIFY `subcat_id` int(5) NOT NULL AUTO_INCREMENT;
 
 --
--- Constraints for table `vendor`
+-- AUTO_INCREMENT for table `vendor`
 --
 ALTER TABLE `vendor`
-  ADD CONSTRAINT `vendor_ibfk_1` FOREIGN KEY (`username`) REFERENCES `login` (`username`),
-  ADD CONSTRAINT `vendor_ibfk_2` FOREIGN KEY (`staff_id`) REFERENCES `staff` (`staff_id`);
+  MODIFY `vendor_id` int(5) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

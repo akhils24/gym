@@ -16,7 +16,7 @@ if(isset($_POST['register'])) {
     if(trim($passwordleft) == trim($passwordright)) {
           $lgn=mysqli_query($conn,"SELECT * FROM login WHERE username='$email'");
           if(mysqli_num_rows($lgn)) {
-            echo "<script>alert('Username has already been used !');window.location.herf='register.php';</script>";
+            echo "<script>alert('Username has already been used !');window.location.href='register.php';</script>";
           } else {
             mysqli_begin_transaction($conn);
             try {
@@ -24,7 +24,7 @@ if(isset($_POST['register'])) {
                 mysqli_query($conn,$lgqry);
                 $custqry= "INSERT INTO customer(username,c_fname,c_lname,c_phno,c_place,c_dist,C_pincode,c_gender,c_dob)VALUES('$email','$firstName','$lastName','$phoneNumber','$place','$district','$pincode','$gender','$dob')";
                 mysqli_query($conn,$custqry);
-                commit($conn);
+                mysqli_commit($conn);
                 echo "<script>alert('Details of ".$firstName." have registered successfully!');</script>";
             } catch(Exception $e) {
                 mysqli_rollback($conn);

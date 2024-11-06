@@ -102,7 +102,7 @@ session_start();
 				                <ul class="nav navbar-nav navbar-right" data-in="fadeInDown" data-out="fadeOutUp">
 				                    <li class=" scroll active"><a href="#home">home</a></li>
 				                    <li class="scroll"><a href="#service">service</a></li>
-				                    <li class="scroll"><a href="#featured-cars" >featured cars</a></li>
+				                    <li class="scroll"><a href="#featured-cars"  >featured cars</a></li>
 				                    <li class="scroll"><a href="#new-cars">new cars</a></li>
 									<?php if(isset($_SESSION['userid'])):?>
 										<li class=""><a  href="logout.php" >logout</a></li>
@@ -671,6 +671,8 @@ session_start();
 		</section><!--/.clients-say-->	
 		<!-- clients-say end -->
 
+		
+
 		<!--contact start-->
 		<footer id="contact"  class="contact">
 			<div class="container">
@@ -748,7 +750,6 @@ session_start();
 						</div>
 					</div>
 				</div>
-				
 			</div><!--/.container-->
 
 			<div id="scroll-Top">
