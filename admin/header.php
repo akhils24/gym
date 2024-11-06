@@ -97,6 +97,9 @@ session_start();
                 <a  href="customers.php"><i class="fas fa-user-friends"></i><p>Customers</p></a>
               </li>
               <li class="nav-item">
+                <a  href="vendor.php"><i class="fas fa-user-friends"></i><p>Vendor</p></a>
+              </li>
+              <li class="nav-item">
                 <a  href="courier.php"><i class="fas fa-user-astronaut"></i><p>Courier</p></a>
               </li>
               <li class="nav-item">
@@ -107,6 +110,9 @@ session_start();
               </li>
               <li class="nav-item">
                 <a  href="item.php"><i class="fas fa-ellipsis-h"></i><p>Items</p></a>
+              </li>
+              <li class="nav-item">
+                <a  href="purchase.php"><i class="fas fa-shopping-bag"></i><p>purchase</p></a>
               </li>
               <li class="nav-item">
                 <a data-bs-toggle="collapse" href="#forms">

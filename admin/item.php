@@ -5,7 +5,6 @@ if(isset($_POST['item_submit'])) {
   $subcat = $_POST['subcat'];
   $item_name = $_POST['name'];
   $description = $_POST['desc'];
-  $price = $_POST['price'];
   $profit = $_POST['profit'];
   $image = addslashes(file_get_contents($_FILES['image']['tmp_name'])); // Convert the image to binary data
   $image_name = $_FILES['image']['name'];
@@ -16,7 +15,7 @@ if(isset($_POST['item_submit'])) {
   } else{
     mysqli_begin_transaction($conn);
     try{
-      $itmqry=mysqli_query($conn,"INSERT INTO item(subcat_id,item_name,item_desc,item_image,image_name,item_price,item_profit)VALUES('$subcat','$item_name','$description','$image','$image_name','$price','$profit')");
+      $itmqry=mysqli_query($conn,"INSERT INTO item(subcat_id,item_name,item_desc,item_image,image_name,item_profit)VALUES('$subcat','$item_name','$description','$image','$image_name','$profit')");
       mysqli_commit($conn);
       echo "<script>alert('Item : ".$item_name." added successfully ');window.location.href='item.php';</script>";
     } catch(Exception $e) {
@@ -99,10 +98,6 @@ if(isset($_POST['activate'])) {
                                 </div>
                                 <div class="col-md-6 col-lg-4">
                                   <div class="form-group">
-                                    <label for="price">Item Price</label>
-                                    <input type="number" class="form-control" id="price" placeholder="Enter the price of the Item " name="price" />
-                                  </div>
-                                  <div class="form-group">
                                     <label for="profit">Profit Percentage</label>
                                     <input type="text" class="form-control" id="profit" placeholder="Enter the profit percentage of the Item" name="profit" />
                                   </div>
@@ -134,7 +129,6 @@ if(isset($_POST['activate'])) {
                                 <th>Sub-Category</th>
                                 <th>Description</th>
                                 <th>Image</th>
-                                <th>Price</th>
                                 <th>profit Percentage</th>
                                 <th>Status</th>
                                 <th>Action</th>
@@ -153,7 +147,6 @@ if(isset($_POST['activate'])) {
                                 echo "<td>" . $subcat['subcat_name'] . "</td>";
                                 echo "<td>" . $row['item_desc'] . "</td>";
                                 echo '<td><img class="imagecheck-image" style="opacity:1;" src="data:image/jpeg;base64,' . base64_encode($row['item_image']) . '" alt="' . $row['image_name'] . '" /></td>';
-                                echo "<td>" . $row['item_price'] . "</td>";
                                 echo "<td>" . $row['item_profit'] . "</td>";
                                 if($row['item_status']==1)
                                     echo "<td>Active</td>";
