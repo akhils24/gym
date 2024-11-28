@@ -25,7 +25,7 @@ if(isset($_POST['register'])) {
                 $custqry= "INSERT INTO customer(username,c_fname,c_lname,c_phno,c_place,c_dist,C_pincode,c_gender,c_dob)VALUES('$email','$firstName','$lastName','$phoneNumber','$place','$district','$pincode','$gender','$dob')";
                 mysqli_query($conn,$custqry);
                 mysqli_commit($conn);
-                echo "<script>alert('Details of ".$firstName." have registered successfully!');</script>";
+                echo "<script>alert('Details of ".$firstName." have registered successfully!');window.location.href='index.php';</script>";
             } catch(Exception $e) {
                 mysqli_rollback($conn);
                 echo "<script>alert('Registration Failed due to some issues. Please try again !');window.location.href='register.php';</script>";

@@ -13,6 +13,18 @@ if($conn->connect_error)
 // echo"Connected successfully";
 
 session_start();
+
+if(isset($_POST['details'])) {
+	$id=$_POST['id'];
+	$purid=$_POST['purid'];
+	if(isset($_SESSION['userid'])){
+		$_SESSION['itemid']= $id;
+		$_SESSION['purid']= $purid;
+		echo "<script>window.location.href='product.php';</script>";
+	}else{
+		echo"<script>alert(' Login to view More..!');</script>";
+	}
+}
 ?>
 
 <!doctype html>
@@ -63,25 +75,121 @@ session_start();
         
         <!--responsive.css-->
         <link rel="stylesheet" href="assets/css/responsive.css">
-        
-        <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-		
-        <!--[if lt IE 9]>
-			<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-			<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-        <![endif]-->
+
+		<!-- for user drop down -->
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha512-SfTiTlX6kk+qitfevl/7LibUOeJWlt9rbyDn92a1DqWOw9vWG2MFoays0sgObmWazO5BQPiFucnnEAjpAB+/Sw==" crossorigin="anonymous" />
 
     </head>
 	
 	<body>
-		<!--[if lte IE 9]>
-            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
-        <![endif]-->
-	
+		<style>
+			.action {
+			font-family: "Poppins", sans-serif;
+			position: fixed;
+			top: 30px;
+			right: 100px;
+			}
+
+			.action .profile {
+			position: relative;
+			width: 60px;
+			height: 60px;
+			/* border-radius: 50%; */
+			overflow: hidden;
+			cursor: pointer;
+			}
+
+			.action .profile img {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			}
+
+			.action .menu {
+			position: absolute;
+			top: 120px;
+			right: -10px;
+			padding: 10px 20px;
+			background: #fff;
+			width: 200px;
+			box-sizing: 0 5px 25px rgba(0, 0, 0, 0.1);
+			border-radius: 15px;
+			transition: 0.5s;
+			visibility: hidden;
+			opacity: 0;
+			}
+
+			.action .menu.active {
+			top: 80px;
+			visibility: visible;
+			opacity: 1;
+			}
+
+			.action .menu::before {
+			content: "";
+			position: absolute;
+			top: -5px;
+			right: 28px;
+			width: 20px;
+			height: 20px;
+			background: #fff;
+			transform: rotate(45deg);
+			}
+
+			.action .menu h3 {
+			width: 100%;
+			text-align: center;
+			font-size: 18px;
+			padding: 20px 0;
+			font-weight: 500;
+			color: #555;
+			line-height: 1.5em;
+			}
+
+			.action .menu h3 span {
+			font-size: 14px;
+			color: #cecece;
+			font-weight: 300;
+			}
+
+			.action .menu ul li {
+			list-style: none;
+			padding: 16px 0;
+			border-top: 1px solid rgba(0, 0, 0, 0.5);
+			display: flex;
+			align-items: center;
+			}
+
+			.action .menu ul li img {
+			max-width: 20px;
+			margin-right: 10px;
+			opacity: 0.5;
+			transition: 0.5s;
+			}
+
+			.action .menu ul li:hover img {
+			opacity: 1;
+			}
+
+			.action .menu ul li a {
+			display: inline-block;
+			font-size: 18px;
+			text-decoration: none;
+			color: #555;
+			font-weight: 400;
+			transition: 0.5s;
+			}
+
+			.action .menu ul li:hover a {
+			color: #5222e0;
+			}
+
+		</style>
 		<!--welcome-hero start -->
 		<section id="home" class="welcome-hero">
-
 			<!-- top-area Start -->
 			<div class="top-area">
 				<div class="header-area">
@@ -100,14 +208,43 @@ session_start();
 				            <!-- Collect the nav links, forms, and other content for toggling -->
 				            <div class="collapse navbar-collapse menu-ui-design" id="navbar-menu">
 				                <ul class="nav navbar-nav navbar-right" data-in="fadeInDown" data-out="fadeOutUp">
-				                    <li class=" scroll active"><a href="#home">home</a></li>
-				                    <li class="scroll"><a href="#service">service</a></li>
-				                    <li class="scroll"><a href="#featured-cars"  >featured cars</a></li>
-				                    <li class="scroll"><a href="#new-cars">new cars</a></li>
 									<?php if(isset($_SESSION['userid'])):?>
-										<li class=""><a  href="logout.php" >logout</a></li>
+										<li class="scroll"><a href="#service">services</a></li>
+										<li class="scroll"><a href="#new-cars">new Produts</a></li>
+										<li class="scroll"><a href="#featured-cars" >featured Products</a></li>
+										<li><a href="cart.php">cart</a></li>
+										<li>
+											<?php
+												$usqry=mysqli_query($conn,"SELECT * FROM customer WHERE customer_id =" .$_SESSION['userid']); 
+												$us=mysqli_fetch_assoc($usqry); 
+											?>
+											<div class="action">
+												<div class="profile" onclick="menuToggle();">
+													<img src="assets/images/user.png" style="height:35px; width:35px;" alt="image of clients person" />
+												</div>
+												<div class="menu">
+													<h3><?php echo $us['c_fname'].' '.$us['c_lname']; ?><br /><span><?php echo $us['username']; ?></span></h3>
+													<ul>
+													<li>
+														<img src="assets/images/user-profile/profile.png"  /><a href="profile.php">My profile</a>
+													</li>
+													<li>
+														<img src="assets/images/user-profile/edit.png" /><a href="orders.php">Orders</a>
+													</li>
+													<li>
+														<img src="assets/images/user-profile/logout.png" /><a href="logout.php">Logout</a>
+													</li>
+													</ul>
+												</div>
+											</div>
+										</li>
+									<?php else:?>
+										<li class=" scroll active"><a href="#home">home</a></li>
+										<li class="scroll"><a href="#service">service</a></li>
+										<li class="scroll"><a href="#new-cars">new Produts</a></li>
+										<li class="scroll"><a href="#featured-cars" >featured Products</a></li>
+										<li class="scroll"><a href="#contact">contact</a></li>
 									<?php endif;?>
-				                    <li class="scroll"><a href="#contact">contact</a></li>
 				                </ul><!--/.nav -->
 				            </div><!-- /.navbar-collapse -->
 				        </div><!--/.container-->
@@ -115,7 +252,6 @@ session_start();
 				    <!-- End Navigation -->
 				</div><!--/.header-area-->
 			    <div class="clearfix"></div>
-
 			</div><!-- /.top-area-->
 			<!-- top-area End -->
 
@@ -132,126 +268,10 @@ session_start();
 					<?php endif;?>
 				</div>
 			</div>
-
-			<div class="container">
-				<div class="row">
-					<div class="col-md-12">
-						<div class="model-search-content">
-							<div class="row">
-								<div class="col-md-offset-1 col-md-2 col-sm-12">
-									<div class="single-model-search">
-										<h2>select year</h2>
-										<div class="model-select-icon">
-											<select class="form-control">
-
-											  	<option value="default">year</option><!-- /.option-->
-
-											  	<option value="2018">2018</option><!-- /.option-->
-
-											  	<option value="2017">2017</option><!-- /.option-->
-											  	<option value="2016">2016</option><!-- /.option-->
-
-											</select><!-- /.select-->
-										</div><!-- /.model-select-icon -->
-									</div>
-									<div class="single-model-search">
-										<h2>body style</h2>
-										<div class="model-select-icon">
-											<select class="form-control">
-
-											  	<option value="default">style</option><!-- /.option-->
-
-											  	<option value="sedan">sedan</option><!-- /.option-->
-
-											  	<option value="van">van</option><!-- /.option-->
-											  	<option value="roadster">roadster</option><!-- /.option-->
-
-											</select><!-- /.select-->
-										</div><!-- /.model-select-icon -->
-									</div>
-								</div>
-								<div class="col-md-offset-1 col-md-2 col-sm-12">
-									<div class="single-model-search">
-										<h2>select make</h2>
-										<div class="model-select-icon">
-											<select class="form-control">
-
-											  	<option value="default">make</option><!-- /.option-->
-
-											  	<option value="toyota">toyota</option><!-- /.option-->
-
-											  	<option value="holden">holden</option><!-- /.option-->
-											  	<option value="maecedes-benz">maecedes-benz.</option><!-- /.option-->
-
-											</select><!-- /.select-->
-										</div><!-- /.model-select-icon -->
-									</div>
-									<div class="single-model-search">
-										<h2>car condition</h2>
-										<div class="model-select-icon">
-											<select class="form-control">
-
-											  	<option value="default">condition</option><!-- /.option-->
-
-											  	<option value="something">something</option><!-- /.option-->
-
-											  	<option value="something">something</option><!-- /.option-->
-											  	<option value="something">something</option><!-- /.option-->
-
-											</select><!-- /.select-->
-										</div><!-- /.model-select-icon -->
-									</div>
-								</div>
-								<div class="col-md-offset-1 col-md-2 col-sm-12">
-									<div class="single-model-search">
-										<h2>select model</h2>
-										<div class="model-select-icon">
-											<select class="form-control">
-
-											  	<option value="default">model</option><!-- /.option-->
-
-											  	<option value="kia-rio">kia-rio</option><!-- /.option-->
-
-											  	<option value="mitsubishi">mitsubishi</option><!-- /.option-->
-											  	<option value="ford">ford</option><!-- /.option-->
-
-											</select><!-- /.select-->
-										</div><!-- /.model-select-icon -->
-									</div>
-									<div class="single-model-search">
-										<h2>select price</h2>
-										<div class="model-select-icon">
-											<select class="form-control">
-
-											  	<option value="default">price</option><!-- /.option-->
-
-											  	<option value="$0.00">$0.00</option><!-- /.option-->
-
-											  	<option value="$0.00">$0.00</option><!-- /.option-->
-											  	<option value="$0.00">$0.00</option><!-- /.option-->
-
-											</select><!-- /.select-->
-										</div><!-- /.model-select-icon -->
-									</div>
-								</div>
-								<div class="col-md-2 col-sm-12">
-									<div class="single-model-search text-center">
-										<button class="welcome-btn model-search-btn" onclick="window.location.href='#'">
-											search
-										</button>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-
 		</section><!--/.welcome-hero-->
-		<!--welcome-hero end -->
-
+		
 		<!--service start -->
-		<section id="service" class="service">
+		<section id="service" class="service" style="margin-top:-200px;">
 			<div class="container">
 				<div class="service-content">
 					<div class="row">
@@ -299,86 +319,45 @@ session_start();
 		<section id="new-cars" class="new-cars">
 			<div class="container">
 				<div class="section-header">
-					<p>checkout <span>the</span> latest cars</p>
-					<h2>newest cars</h2>
+					<p>checkout <span>the</span> latest products</p>
+					<h2>newest products</h2>
 				</div><!--/.section-header-->
 				<div class="new-cars-content">
 					<div class="owl-carousel owl-theme" id="new-cars-carousel">
-						<div class="new-cars-item">
-							<div class="single-new-cars-item">
-								<div class="row">
-									<div class="col-md-7 col-sm-12">
-										<div class="new-cars-img">
-											<img src="assets/images/new-cars-model/ncm1.png" alt="img"/>
-										</div><!--/.new-cars-img-->
-									</div>
-									<div class="col-md-5 col-sm-12">
-										<div class="new-cars-txt">
-											<h2><a href="#">chevrolet camaro <span> za100</span></a></h2>
-											<p>
-												Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. 
-											</p>
-											<p class="new-cars-para2">
-												Sed ut pers unde omnis iste natus error sit voluptatem accusantium doloremque laudantium. 
-											</p>
-											<button class="welcome-btn new-cars-btn" onclick="window.location.href='#'">
-												view details
-											</button>
-										</div><!--/.new-cars-txt-->	
-									</div><!--/.col-->
-								</div><!--/.row-->
-							</div><!--/.single-new-cars-item-->
-						</div><!--/.new-cars-item-->
-						<div class="new-cars-item">
-							<div class="single-new-cars-item">
-								<div class="row">
-									<div class="col-md-7 col-sm-12">
-										<div class="new-cars-img">
-											<img src="assets/images/new-cars-model/ncm2.png" alt="img"/>
-										</div><!--/.new-cars-img-->
-									</div>
-									<div class="col-md-5 col-sm-12">
-										<div class="new-cars-txt">
-											<h2><a href="#">BMW series-3 wagon</a></h2>
-											<p>
-												Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. 
-											</p>
-											<p class="new-cars-para2">
-												Sed ut pers unde omnis iste natus error sit voluptatem accusantium doloremque laudantium. 
-											</p>
-											<button class="welcome-btn new-cars-btn" onclick="window.location.href='#'">
-												view details
-											</button>
-										</div><!--/.new-cars-txt-->	
-									</div><!--/.col-->
-								</div><!--/.row-->	
-							</div><!--/.single-new-cars-item-->
-						</div><!--/.new-cars-item-->
-						<div class="new-cars-item">
-							<div class="single-new-cars-item">
-								<div class="row">
-									<div class="col-md-7 col-sm-12">
-										<div class="new-cars-img">
-											<img src="assets/images/new-cars-model/ncm3.png" alt="img"/>
-										</div><!--/.new-cars-img-->
-									</div>
-									<div class="col-md-5 col-sm-12">
-										<div class="new-cars-txt">
-											<h2><a href="#">ferrari 488 superfast</a></h2>
-											<p>
-												Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. 
-											</p>
-											<p class="new-cars-para2">
-												Sed ut pers unde omnis iste natus error sit voluptatem accusantium doloremque laudantium. 
-											</p>
-											<button class="welcome-btn new-cars-btn" onclick="window.location.href='#'">
-												view details
-											</button>
-										</div><!--/.new-cars-txt-->	
-									</div><!--/.col-->
-								</div><!--/.row-->
-							</div><!--/.single-new-cars-item-->
-						</div><!--/.new-cars-item-->
+						<?php
+						$itm= mysqli_query($conn,"SELECT * FROM item WHERE item_status=1 ORDER BY item_id DESC limit 3");
+						while($row=mysqli_fetch_assoc($itm))
+							{
+								$subcat=mysqli_query($conn,"SELECT * FROM subcategory WHERE subcat_id = '".$row['subcat_id']."'");
+								$subrow=mysqli_fetch_assoc($subcat);
+								$cat=mysqli_query($conn,"SELECT * FROM category WHERE cat_id = '".$subrow['cat_id']."'");
+								$catrow=mysqli_fetch_assoc($cat);
+								$pur=mysqli_query($conn,"SELECT * FROM purchase_child WHERE item_id='".$row['item_id']."' AND stock >0 ORDER BY Pur_child_id ASC limit 1");
+								$purrow=mysqli_fetch_assoc($pur);
+								echo '<div class="new-cars-item">
+									<div class="single-new-cars-item">
+										<div class="row">
+											<div class="col-md-7 col-sm-12">
+												<div class="new-cars-img">
+													<img style="height : 300px; width : 300px;" src="data:image/jpeg;base64,' . base64_encode($row['item_image']) . '" alt="' . $row['image_name'] . '">
+												</div><!--/.new-cars-img-->
+											</div>
+											<div class="col-md-5 col-sm-12">
+												<div class="new-cars-txt">
+													<h2><a href="#"> <span> '.$row['item_name'].'</span></a></h2>
+
+													<h4>Price : '.$purrow['sell_price'].'</h4><br>
+													<h4>Stock : '.$purrow['stock'].'</h4>
+													<p class="new-cars-para2">'.$row['item_desc'].'</p>
+														
+													<form method="POST" action=""><input name="id" hidden value="'.$row['item_id'].'"><input name="purid" hidden value="'.$purrow['pur_child_id'].'"><button class="welcome-btn new-cars-btn" type="submit" name="details">view details</button></form>
+												</div><!--/.new-cars-txt-->	
+											</div><!--/.col-->
+										</div><!--/.row-->
+									</div><!--/.single-new-cars-item-->
+								</div>';
+							}
+						?>
 					</div><!--/#new-cars-carousel-->
 				</div><!--/.new-cars-content-->
 			</div><!--/.container-->
@@ -390,205 +369,46 @@ session_start();
 		<section id="featured-cars" class="featured-cars">
 			<div class="container">
 				<div class="section-header">
-					<p>checkout <span>the</span> featured cars</p>
-					<h2>featured cars</h2>
+					<p>checkout <span>the</span> featured Products</p>
+					<h2>featured Products</h2>
 				</div><!--/.section-header-->
 				<div class="featured-cars-content">
 					<div class="row">
-						<div class="col-lg-3 col-md-4 col-sm-6">
-							<div class="single-featured-cars">
-								<div class="featured-img-box">
-									<div class="featured-cars-img">
-										<img src="assets/images/featured-cars/fc1.png" alt="cars">
+						<?php
+							$itm= mysqli_query($conn,"SELECT * FROM item WHERE item_status=1 ");
+							while($row=mysqli_fetch_assoc($itm))
+							{
+								$subcat=mysqli_query($conn,"SELECT * FROM subcategory WHERE subcat_id = '".$row['subcat_id']."'");
+								$subrow=mysqli_fetch_assoc($subcat);
+								$cat=mysqli_query($conn,"SELECT * FROM category WHERE cat_id = '".$subrow['cat_id']."'");
+								$catrow=mysqli_fetch_assoc($cat);
+								$pur=mysqli_query($conn,"SELECT * FROM purchase_child WHERE item_id='".$row['item_id']."' AND stock >0 ORDER BY Pur_child_id ASC limit 1");
+								$purrow=mysqli_fetch_assoc($pur);
+								echo '<div class="col-lg-3 col-md-4 col-sm-6">
+									<div class="single-featured-cars">
+										<div class="featured-img-box">
+											<div class="featured-cars-img">';
+												echo '<img style="height : 200px; width : 200px;" src="data:image/jpeg;base64,' . base64_encode($row['item_image']) . '" alt="' . $row['image_name'] . '">';
+												// <img src="assets/images/featured-cars/fc1.png" alt="cars">
+											echo '</div>
+											<div class="featured-model-info">
+												<p>
+													category : ' . $catrow['cat_name'].'
+													<span class="featured-mi-span"> '.$subrow['subcat_name'].'</span> 
+												</p>
+											</div>
+										</div>
+										<div class="featured-cars-txt">
+											<h2><a href="#">'.$row['item_name'].'</a></h2>
+											<h3>'.$purrow['sell_price'].'</h3>
+											<h3>Stock : '.$purrow['stock'].'</h3>
+											<p>'.$row['item_desc'].'</p>
+											<form method="POST" action=""><input name="id" hidden value="'.$row['item_id'].'"><input name="purid" hidden value="'.$purrow['pur_child_id'].'"><button class="welcome-btn new-cars-btn" type="submit" name="details">view details</button></form>
+										</div>
 									</div>
-									<div class="featured-model-info">
-										<p>
-											model: 2017
-											<span class="featured-mi-span"> 3100 mi</span> 
-											<span class="featured-hp-span"> 240HP</span>
-											 automatic
-										</p>
-									</div>
-								</div>
-								<div class="featured-cars-txt">
-									<h2><a href="#">BMW 6-series gran coupe</a></h2>
-									<h3>$89,395</h3>
-									<p>
-										Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non. 
-									</p>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-3 col-md-4 col-sm-6">
-							<div class="single-featured-cars">
-								<div class="featured-img-box">
-									<div class="featured-cars-img">
-										<img src="assets/images/featured-cars/fc2.png" alt="cars">
-									</div>
-									<div class="featured-model-info">
-										<p>
-											model: 2017
-											<span class="featured-mi-span"> 3100 mi</span> 
-											<span class="featured-hp-span"> 240HP</span>
-											 automatic
-										</p>
-									</div>
-								</div>
-								<div class="featured-cars-txt">
-									<h2><a href="#">chevrolet camaro <span>wmv20</span></a></h2>
-									<h3>$66,575</h3>
-									<p>
-										Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non. 
-									</p>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-3 col-md-4 col-sm-6">
-							<div class="single-featured-cars">
-								<div class="featured-img-box">
-									<div class="featured-cars-img">
-										<img src="assets/images/featured-cars/fc3.png" alt="cars">
-									</div>
-									<div class="featured-model-info">
-										<p>
-											model: 2017
-											<span class="featured-mi-span"> 3100 mi</span> 
-											<span class="featured-hp-span"> 240HP</span>
-											 automatic
-										</p>
-									</div>
-								</div>
-								<div class="featured-cars-txt">
-									<h2><a href="#">lamborghini <span>v520</span></a></h2>
-									<h3>$125,250</h3>
-									<p>
-										Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non. 
-									</p>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-3 col-md-4 col-sm-6">
-							<div class="single-featured-cars">
-								<div class="featured-img-box">
-									<div class="featured-cars-img">
-										<img src="assets/images/featured-cars/fc4.png" alt="cars">
-									</div>
-									<div class="featured-model-info">
-										<p>
-											model: 2017
-											<span class="featured-mi-span"> 3100 mi</span> 
-											<span class="featured-hp-span"> 240HP</span>
-											 automatic
-										</p>
-									</div>
-								</div>
-								<div class="featured-cars-txt">
-									<h2><a href="#">audi <span> a3</span> sedan</a></h2>
-									<h3>$95,500</h3>
-									<p>
-										Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non. 
-									</p>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-lg-3 col-md-4 col-sm-6">
-							<div class="single-featured-cars">
-								<div class="featured-img-box">
-									<div class="featured-cars-img">
-										<img src="assets/images/featured-cars/fc4.png" alt="cars">
-									</div>
-									<div class="featured-model-info">
-										<p>
-											model: 2017
-											<span class="featured-mi-span"> 3100 mi</span> 
-											<span class="featured-hp-span"> 240HP</span>
-											 automatic
-										</p>
-									</div>
-								</div>
-								<div class="featured-cars-txt">
-									<h2><a href="#">infiniti <span>z5</span></a></h2>
-									<h3>$36,850</h3>
-									<p>
-										Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non. 
-									</p>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-3 col-md-4 col-sm-6">
-							<div class="single-featured-cars">
-								<div class="featured-img-box">
-									<div class="featured-cars-img">
-										<img src="assets/images/featured-cars/fc5.png" alt="cars">
-									</div>
-									<div class="featured-model-info">
-										<p>
-											model: 2017
-											<span class="featured-mi-span"> 3100 mi</span> 
-											<span class="featured-hp-span"> 240HP</span>
-											 automatic
-										</p>
-									</div>
-								</div>
-								<div class="featured-cars-txt">
-									<h2><a href="#">porsche <span>718</span> cayman</a></h2>
-									<h3>$48,500</h3>
-									<p>
-										Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non. 
-									</p>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-3 col-md-4 col-sm-6">
-							<div class="single-featured-cars">
-								<div class="featured-img-box">
-									<div class="featured-cars-img">
-										<img src="assets/images/featured-cars/fc7.png" alt="cars">
-									</div>
-									<div class="featured-model-info">
-										<p>
-											model: 2017
-											<span class="featured-mi-span"> 3100 mi</span> 
-											<span class="featured-hp-span"> 240HP</span>
-											 automatic
-										</p>
-									</div>
-								</div>
-								<div class="featured-cars-txt">
-									<h2><a href="#"><span>bmw 8-</span>series coupe</a></h2>
-									<h3>$56,000</h3>
-									<p>
-										Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non. 
-									</p>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-3 col-md-4 col-sm-6">
-							<div class="single-featured-cars">
-								<div class="featured-img-box">
-									<div class="featured-cars-img">
-										<img src="assets/images/featured-cars/fc8.png" alt="cars">
-									</div>
-									<div class="featured-model-info">
-										<p>
-											model: 2017
-											<span class="featured-mi-span"> 3100 mi</span> 
-											<span class="featured-hp-span"> 240HP</span>
-											 automatic
-										</p>
-									</div>
-								</div>
-								<div class="featured-cars-txt">
-									<h2><a href="#">BMW <span> x</span>series-6</a></h2>
-									<h3>$75,800</h3>
-									<p>
-										Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non. 
-									</p>
-								</div>
-							</div>
-						</div>
+								</div>';
+							}
+						?>
 					</div>
 				</div>
 			</div><!--/.container-->
@@ -784,7 +604,13 @@ session_start();
 
         <!--Custom JS-->
         <script src="assets/js/custom.js"></script>
+
+		<script>
+			function menuToggle() {
+				const toggleMenu = document.querySelector(".menu");
+				toggleMenu.classList.toggle("active");
+			}
+		</script>
         
     </body>
-	
 </html>

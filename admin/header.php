@@ -114,7 +114,7 @@ session_start();
               <li class="nav-item">
                 <a  href="purchase.php"><i class="fas fa-shopping-bag"></i><p>purchase</p></a>
               </li>
-              <li class="nav-item">
+              <!-- <li class="nav-item">
                 <a data-bs-toggle="collapse" href="#forms">
                   <i class="fas fa-pen-square"></i>
                   <p>Forms</p>
@@ -257,7 +257,7 @@ session_start();
                     </li>
                   </ul>
                 </div>
-              </li>
+              </li> -->
             </ul>
           </div>
         </div>
