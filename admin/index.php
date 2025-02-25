@@ -101,7 +101,7 @@ include('header.php');
           </div>
         </div>
       </div>
-      <div class="row">
+      <!-- <div class="row">
         <div class="col-md-8">
           <div class="card card-round">
             <div class="card-header">
@@ -497,7 +497,7 @@ include('header.php');
             </div>
             <div class="card-body p-0">
               <div class="table-responsive">
-                <!-- Projects table -->
+                
                 <table class="table align-items-center mb-0">
                   <thead class="thead-light">
                     <tr>
@@ -619,7 +619,7 @@ include('header.php');
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </div>

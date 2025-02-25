@@ -102,7 +102,7 @@ if(isset($_POST['activate'])) {
                             <tr>
                                 <th>Sub-category-ID</th>
                                 <th>Sub-category Name</th>
-                                <th>subcategory Name</th>
+                                <th>Category Name</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>

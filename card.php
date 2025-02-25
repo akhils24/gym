@@ -347,7 +347,7 @@ if (isset($_POST['submit'])) {
             </div>
             <div class="field-container">
                 <label for="cardnumber">Card Number</label><span id="generatecard">generate random</span>
-                <input id="cardnumber" type="text"   name="cardno">
+                <input id="cardnumber" type="text"   name="cardno" required>
                 <svg id="ccicon" class="ccicon" width="750" height="471" viewBox="0 0 750 471" version="1.1" xmlns="http://www.w3.org/2000/svg"
                     xmlns:xlink="http://www.w3.org/1999/xlink">
     
@@ -355,11 +355,11 @@ if (isset($_POST['submit'])) {
             </div>
             <div class="field-container">
                 <label for="expirationdate">Expiration (mm/yy)</label>
-                <input id="expirationdate" type="text" name="date">
+                <input id="expirationdate" type="text" name="date" required>
             </div>
             <div class="field-container">
                 <label for="securitycode">Security Code</label>
-                <input id="securitycode" type="text" pattern="[0-9]*" inputmode="numeric" name="cvv">
+                <input id="securitycode" type="text" pattern="[0-9]*" inputmode="numeric" name="cvv" required>
             </div>
             <div>
                 <input  type="submit" name="submit" placeholder="Add Card" value="Add Card" style="color: #0097a7; text-decoration:solid;">

@@ -54,7 +54,7 @@ if(isset($_POST['register'])) {
              <li><a href="index.php">HOME</a></li>
              <li><a href="login.php">LOGIN</a></li>
              <li><a href="">ABOUT US</a></li>
-             <li><a href="">CONTACT US</a></li>
+             <li><a href="index.php#contact">CONTACT US</a></li>
         </ul>
     </nav>    
     <br>

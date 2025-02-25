@@ -260,7 +260,7 @@ if(isset($_POST['payment'])) {
                 </div> -->
                 <div class="form-group">
                     <label for="cvv">CVV</label>
-                    <input type="text" id="cvv" name="cvv" placeholder="Enter the CVV" required>
+                    <input type="password" id="cvv" name="cvv" placeholder="Enter the CVV" required>
                 </div>
                 <?php if(mysqli_num_rows($crd)>0): ?>
                     <button name="payment" type="submit" class="btn-pay">Pay $ <?php echo "$cartm[cart_tot_amt]"; ?></button>

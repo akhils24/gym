@@ -340,7 +340,22 @@ $us=mysqli_fetch_assoc($sql);
                                 <span class="text-primary"><strong>Total Paid:</strong> $<?php echo $tot; ?></span>
                             </div>
                         </div>
-                    <?php endwhile; endif; ?>
+                    <?php endwhile;?>
+                    <?php else:?>
+                        <div class="card mb-4 order-card p-3 shadow-sm">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h6>ORDER ID: #</h6>
+                            </div>
+                            <hr>
+                            <div class="d-flex justify-content-between align-items-center px-4">
+                                <p class="mx1-0"><strong>No Orders made yet ! </strong></p>
+                            </div>
+                            <hr>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="text-primary"><strong>Total Paid:</strong> NIL</span>
+                            </div>
+                        </div>
+                    <?php endif;?>
                 </div>
             </div>
         </div>

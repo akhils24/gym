@@ -30,7 +30,7 @@ if(isset($_POST['save-edit'])) {
     $pincode = $_POST['pin'];
     $place = $_POST['place'];
 
-    $custqry= "UPDATE customer SET c_fname = '$firstName',c_lname = '$lastName',c_phno = '$phoneNumber',c_place = '$place',c_dist = '$district',C_pincode = '$pincode',c_gender = '$gender',c_dob = '$dob'";
+    $custqry= "UPDATE customer SET c_fname = '$firstName',c_lname = '$lastName',c_phno = '$phoneNumber',c_place = '$place',c_dist = '$district',C_pincode = '$pincode',c_gender = '$gender',c_dob = '$dob' WHERE customer_id='$userid'";
     mysqli_query($conn,$custqry);
     echo "<script>alert('Details of ".$firstName." have been Updated successfully!');window.location.href='profile.php'</script>";
 

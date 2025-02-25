@@ -278,33 +278,33 @@ if(isset($_POST['details'])) {
 						<div class="col-md-4 col-sm-6">
 							<div class="single-service-item">
 								<div class="single-service-icon">
-									<i class="flaticon-car"></i>
+									<!-- <i class="flaticon-car"></i> -->
 								</div>
-								<h2><a href="#">largest dealership <span> of</span> car</a></h2>
+								<h2><a href="#">largest Gym Equipemnt  <span> dealership </span></a></h2>
 								<p>
-									Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut den fugit sed quia.  
+									<!-- Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut den fugit sed quia.   -->
 								</p>
 							</div>
 						</div>
 						<div class="col-md-4 col-sm-6">
 							<div class="single-service-item">
 								<div class="single-service-icon">
-									<i class="flaticon-car-repair"></i>
+									<!-- <i class="flaticon-car-repair"></i> -->
 								</div>
-								<h2><a href="#">unlimited repair warrenty</a></h2>
+								<h2><a href="#">Limited Repair Warranty for Gym Equipment</a></h2>
 								<p>
-									Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut den fugit sed quia.  
+								<!-- A limited repair warranty from the largest gym equipment dealership offers essential protection for your purchase, ensuring that your equipment remains in top condition over time -->
 								</p>
 							</div>
 						</div>
 						<div class="col-md-4 col-sm-6">
 							<div class="single-service-item">
 								<div class="single-service-icon">
-									<i class="flaticon-car-1"></i>
+									<!-- <i class="flaticon-car-1"></i> -->
 								</div>
-								<h2><a href="#">insurence support</a></h2>
+								<h2><a href="#">Full time support</a></h2>
 								<p>
-									Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut den fugit sed quia. 
+									<!-- Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut den fugit sed quia.  -->
 								</p>
 							</div>
 						</div>
@@ -333,6 +333,7 @@ if(isset($_POST['details'])) {
 								$cat=mysqli_query($conn,"SELECT * FROM category WHERE cat_id = '".$subrow['cat_id']."'");
 								$catrow=mysqli_fetch_assoc($cat);
 								$pur=mysqli_query($conn,"SELECT * FROM purchase_child WHERE item_id='".$row['item_id']."' AND stock >0 ORDER BY Pur_child_id ASC limit 1");
+								$purcnt=mysqli_num_rows($pur)>0;
 								$purrow=mysqli_fetch_assoc($pur);
 								echo '<div class="new-cars-item">
 									<div class="single-new-cars-item">
@@ -344,13 +345,19 @@ if(isset($_POST['details'])) {
 											</div>
 											<div class="col-md-5 col-sm-12">
 												<div class="new-cars-txt">
-													<h2><a href="#"> <span> '.$row['item_name'].'</span></a></h2>
-
-													<h4>Price : '.$purrow['sell_price'].'</h4><br>
-													<h4>Stock : '.$purrow['stock'].'</h4>
-													<p class="new-cars-para2">'.$row['item_desc'].'</p>
-														
-													<form method="POST" action=""><input name="id" hidden value="'.$row['item_id'].'"><input name="purid" hidden value="'.$purrow['pur_child_id'].'"><button class="welcome-btn new-cars-btn" type="submit" name="details">view details</button></form>
+													<h2><a href="#"> <span> '.$row['item_name'].'</span></a></h2>';
+													if($purcnt){
+														echo'<h4>Price : '.$purrow['sell_price'].'</h4><br>
+														<h4>Stock : '.$purrow['stock'].'</h4>
+														<p class="new-cars-para2">'.$row['item_desc'].'</p>
+														<form method="POST" action=""><input name="id" hidden value="'.$row['item_id'].'"><input name="purid" hidden value="'.$purrow['pur_child_id'].'"><button class="welcome-btn new-cars-btn" type="submit" name="details">view details</button></form>';
+	
+													}else{
+														echo'<h4>Stock : 0 </h4>
+														<p class="new-cars-para2">'.$row['item_desc'].'</p>
+														<button class="welcome-btn new-cars-btn" type="submit" name="details">Out Of Stock</button>';
+													}
+													echo'
 												</div><!--/.new-cars-txt-->	
 											</div><!--/.col-->
 										</div><!--/.row-->
@@ -383,6 +390,7 @@ if(isset($_POST['details'])) {
 								$cat=mysqli_query($conn,"SELECT * FROM category WHERE cat_id = '".$subrow['cat_id']."'");
 								$catrow=mysqli_fetch_assoc($cat);
 								$pur=mysqli_query($conn,"SELECT * FROM purchase_child WHERE item_id='".$row['item_id']."' AND stock >0 ORDER BY Pur_child_id ASC limit 1");
+								$purcnt=mysqli_num_rows($pur)>0;
 								$purrow=mysqli_fetch_assoc($pur);
 								echo '<div class="col-lg-3 col-md-4 col-sm-6">
 									<div class="single-featured-cars">
@@ -399,11 +407,19 @@ if(isset($_POST['details'])) {
 											</div>
 										</div>
 										<div class="featured-cars-txt">
-											<h2><a href="#">'.$row['item_name'].'</a></h2>
-											<h3>'.$purrow['sell_price'].'</h3>
-											<h3>Stock : '.$purrow['stock'].'</h3>
-											<p>'.$row['item_desc'].'</p>
-											<form method="POST" action=""><input name="id" hidden value="'.$row['item_id'].'"><input name="purid" hidden value="'.$purrow['pur_child_id'].'"><button class="welcome-btn new-cars-btn" type="submit" name="details">view details</button></form>
+											<h2><a href="#">'.$row['item_name'].'</a></h2>';
+											if($purcnt)
+											{
+												echo '<h3>'.$purrow['sell_price'].'</h3>
+												<h3>Stock : '.$purrow['stock'].'</h3>
+												<p>'.$row['item_desc'].'</p>
+												<form method="POST" action=""><input name="id" hidden value="'.$row['item_id'].'"><input name="purid" hidden value="'.$purrow['pur_child_id'].'"><button class="welcome-btn new-cars-btn" type="submit" name="details">view details</button></form>';
+											}else{
+												echo '<h3>'." ".'</h3>
+												<h3>Stock : 0</h3>
+												<p>'.$row['item_desc'].'</p>
+												<button class="welcome-btn new-cars-btn" type="submit" name="details">Out Of Stock</button>';
+											}echo'
 										</div>
 									</div>
 								</div>';
@@ -416,83 +432,6 @@ if(isset($_POST['details'])) {
 		</section><!--/.featured-cars-->
 		<!--featured-cars end -->
 
-		<!-- clients-say strat -->
-		<section id="clients-say"  class="clients-say">
-			<div class="container">
-				<div class="section-header">
-					<h2>what our clients say</h2>
-				</div><!--/.section-header-->
-				<div class="row">
-					<div class="owl-carousel testimonial-carousel">
-						<div class="col-sm-3 col-xs-12">
-							<div class="single-testimonial-box">
-								<div class="testimonial-description">
-									<div class="testimonial-info">
-										<div class="testimonial-img">
-											<img src="assets/images/clients/c1.png" alt="image of clients person" />
-										</div><!--/.testimonial-img-->
-									</div><!--/.testimonial-info-->
-									<div class="testimonial-comment">
-										<p>
-											Sed ut pers unde omnis iste natus error sit voluptatem accusantium dolor laudan rem aperiam, eaque ipsa quae ab illo inventore verit. 
-										</p>
-									</div><!--/.testimonial-comment-->
-									<div class="testimonial-person">
-										<h2><a href="#">tomas lili</a></h2>
-										<h4>new york</h4>
-									</div><!--/.testimonial-person-->
-								</div><!--/.testimonial-description-->
-							</div><!--/.single-testimonial-box-->
-						</div><!--/.col-->
-						<div class="col-sm-3 col-xs-12">
-							<div class="single-testimonial-box">
-								<div class="testimonial-description">
-									<div class="testimonial-info">
-										<div class="testimonial-img">
-											<img src="assets/images/clients/c2.png" alt="image of clients person" />
-										</div><!--/.testimonial-img-->
-									</div><!--/.testimonial-info-->
-									<div class="testimonial-comment">
-										<p>
-											Sed ut pers unde omnis iste natus error sit voluptatem accusantium dolor laudan rem aperiam, eaque ipsa quae ab illo inventore verit. 
-										</p>
-									</div><!--/.testimonial-comment-->
-									<div class="testimonial-person">
-										<h2><a href="#">romi rain</a></h2>
-										<h4>london</h4>
-									</div><!--/.testimonial-person-->
-								</div><!--/.testimonial-description-->
-							</div><!--/.single-testimonial-box-->
-						</div><!--/.col-->
-						<div class="col-sm-3 col-xs-12">
-							<div class="single-testimonial-box">
-								<div class="testimonial-description">
-									<div class="testimonial-info">
-										<div class="testimonial-img">
-											<img src="assets/images/clients/c3.png" alt="image of clients person" />
-										</div><!--/.testimonial-img-->
-									</div><!--/.testimonial-info-->
-									<div class="testimonial-comment">
-										<p>
-											Sed ut pers unde omnis iste natus error sit voluptatem accusantium dolor laudan rem aperiam, eaque ipsa quae ab illo inventore verit. 
-										</p>
-									</div><!--/.testimonial-comment-->
-									<div class="testimonial-person">
-										<h2><a href="#">john doe</a></h2>
-										<h4>washington</h4>
-									</div><!--/.testimonial-person-->
-								</div><!--/.testimonial-description-->
-							</div><!--/.single-testimonial-box-->
-						</div><!--/.col-->
-					</div><!--/.testimonial-carousel-->
-				</div><!--/.row-->
-			</div><!--/.container-->
-
-		</section><!--/.clients-say-->	
-		<!-- clients-say end -->
-
-		
-
 		<!--contact start-->
 		<footer id="contact"  class="contact">
 			<div class="container">
@@ -504,17 +443,17 @@ if(isset($_POST['details'])) {
 									<a href="index.html">Welcare Fitness</a>
 								</div>
 								<p>
-									Ased do eiusm tempor incidi ut labore et dolore magnaian aliqua. Ut enim ad minim veniam.
+									From home workouts to serious gym setups, we’ve got the equipment to push your limits!
 								</p>
 								<div class="footer-contact">
-									<p>info@themesine.com</p>
-									<p>+1 (885) 2563154554</p>
+									<p>welcarefitness.com</p>
+									<p>0484-1287895</p>
 								</div>
 							</div>
 						</div>
 						<div class="col-md-2 col-sm-6">
 							<div class="single-footer-widget">
-								<h2>about devloon</h2>
+								<h2>about Welcare</h2>
 								<ul>
 									<li><a href="#">about us</a></li>
 									<li><a href="#">career</a></li>
@@ -525,26 +464,20 @@ if(isset($_POST['details'])) {
 						</div>
 						<div class="col-md-3 col-xs-12">
 							<div class="single-footer-widget">
-								<h2>top brands</h2>
+								<h2>top products</h2>
 								<div class="row">
-									<div class="col-md-7 col-xs-6">
+									<div class="col-md-6 col-xs-6">
 										<ul>
-											<li><a href="#">BMW</a></li>
-											<li><a href="#">lamborghini</a></li>
-											<li><a href="#">camaro</a></li>
-											<li><a href="#">audi</a></li>
-											<li><a href="#">infiniti</a></li>
-											<li><a href="#">nissan</a></li>
+											<li><a href="#featured-cars">Treadmills</a></li>
+											<li><a href="#featured-cars">Eliptical cycle</a></li>
+											<li><a href="#featured-cars">Adjustable bench</a></li>
 										</ul>
 									</div>
-									<div class="col-md-5 col-xs-6">
+									<div class="col-md-6 col-xs-6">
 										<ul>
-											<li><a href="#">ferrari</a></li>
-											<li><a href="#">porsche</a></li>
-											<li><a href="#">land rover</a></li>
-											<li><a href="#">aston martin</a></li>
-											<li><a href="#">mersedes</a></li>
-											<li><a href="#">opel</a></li>
+											<li><a href="#featured-cars">Barbells</a></li>
+											<li><a href="#featured-cars">Dumbells</a></li>
+											<li><a href="#featured-cars">Resistance bands</a></li>
 										</ul>
 									</div>
 								</div>
@@ -552,10 +485,10 @@ if(isset($_POST['details'])) {
 						</div>
 						<div class="col-md-offset-1 col-md-3 col-sm-6">
 							<div class="single-footer-widget">
-								<h2>news letter</h2>
+								<h2>Subscribe</h2>
 								<div class="footer-newsletter">
 									<p>
-										Subscribe to get latest news  update and informations
+										Subscribe to get updates about latest products and offers
 									</p>
 								</div>
 								<div class="hm-foot-email">

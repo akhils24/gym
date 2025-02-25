@@ -112,7 +112,22 @@ session_start();
                 <a  href="item.php"><i class="fas fa-ellipsis-h"></i><p>Items</p></a>
               </li>
               <li class="nav-item">
-                <a  href="purchase.php"><i class="fas fa-shopping-bag"></i><p>purchase</p></a>
+                <a  href="purchase.php"><i class="fas fa-shopping-bag"></i><p>Purchase</p></a>
+              </li>
+              <li class="nav-item">
+                <a  href="cr-assign.php"><i class="fas fa-box-open"></i><p>Cr-assign</p></a>
+              </li>
+              <li class="nav-section">
+                <span class="sidebar-mini-icon">
+                  <i class="fa fa-ellipsis-h"></i>
+                </span>
+                <h4 class="text-section">Reports</h4>
+              </li>
+              <li class="nav-item">
+                <a  href="purchasereport.php"><i class="fas fa-shopping-bag"></i><p>Purchase-Report</p></a>
+              </li>
+              <li class="nav-item">
+                <a  href="salesreport.php"><i class="icon-basket-loaded"></i><p>Sales-Report</p></a>
               </li>
               <!-- <li class="nav-item">
                 <a data-bs-toggle="collapse" href="#forms">

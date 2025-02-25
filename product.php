@@ -375,7 +375,7 @@ if(isset($_POST['cart'])) {
 					<h2>featured Products</h2>
 				</div><!--/.section-header-->
 				<div class="featured-cars-content">
-					<div class="row">
+                <div class="row">
 						<?php
 							$itm= mysqli_query($conn,"SELECT * FROM item WHERE item_status=1 ");
 							while($row=mysqli_fetch_assoc($itm))
@@ -385,6 +385,7 @@ if(isset($_POST['cart'])) {
 								$cat=mysqli_query($conn,"SELECT * FROM category WHERE cat_id = '".$subrow['cat_id']."'");
 								$catrow=mysqli_fetch_assoc($cat);
 								$pur=mysqli_query($conn,"SELECT * FROM purchase_child WHERE item_id='".$row['item_id']."' AND stock >0 ORDER BY Pur_child_id ASC limit 1");
+								$purcnt=mysqli_num_rows($pur)>0;
 								$purrow=mysqli_fetch_assoc($pur);
 								echo '<div class="col-lg-3 col-md-4 col-sm-6">
 									<div class="single-featured-cars">
@@ -401,11 +402,19 @@ if(isset($_POST['cart'])) {
 											</div>
 										</div>
 										<div class="featured-cars-txt">
-											<h2><a href="#">'.$row['item_name'].'</a></h2>
-											<h3>'.$purrow['sell_price'].'</h3>
-											<h3>Stock : '.$purrow['stock'].'</h3>
-											<p>'.$row['item_desc'].'</p>
-											<form method="POST" action=""><input name="id" hidden value="'.$row['item_id'].'"><input name="purid" hidden value="'.$purrow['pur_child_id'].'"><button class="welcome-btn new-cars-btn" type="submit" name="details">view details</button></form>
+											<h2><a href="#">'.$row['item_name'].'</a></h2>';
+											if($purcnt)
+											{
+												echo '<h3>'.$purrow['sell_price'].'</h3>
+												<h3>Stock : '.$purrow['stock'].'</h3>
+												<p>'.$row['item_desc'].'</p>
+												<form method="POST" action=""><input name="id" hidden value="'.$row['item_id'].'"><input name="purid" hidden value="'.$purrow['pur_child_id'].'"><button class="welcome-btn new-cars-btn" type="submit" name="details">view details</button></form>';
+											}else{
+												echo '<h3>'." ".'</h3>
+												<h3>Stock : 0</h3>
+												<p>'.$row['item_desc'].'</p>
+												<button class="welcome-btn new-cars-btn" type="submit" name="details">Out Of Stock</button>';
+											}echo'
 										</div>
 									</div>
 								</div>';
